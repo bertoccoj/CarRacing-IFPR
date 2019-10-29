@@ -26,6 +26,6 @@ void printChar(SHORT x, SHORT y, const char* symbol, WORD color) {
     DWORD written;
 	SMALL_RECT m_rectWindow;
 
-    WriteConsoleOutputAttribute(out, &attribute, 1, coord, &written);
+    // WriteConsoleOutputAttribute(out, &attribute, 1, coord, &written);
     WriteConsoleOutputCharacterA(out, symbol, 1, coord, &written);
 }

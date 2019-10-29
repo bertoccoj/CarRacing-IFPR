@@ -1,7 +1,18 @@
 #include "carracing.h"
 
 int main() {
-    printf("Hellow Terminal");
+  char gameMatrix[ROWS][COLUMS];
 
-    return 0;
+  int gameOver;
+  ShowConsoleCursor(0);
+  // while (!gameMenu());
+  initMatrix(gameMatrix);
+  drawPista(gameMatrix, 2);
+  system("cls");
+  while (!gameOver) {
+    gotoxy(0,0);
+    printGameMatrix(gameMatrix);
+  }
+  system("pause");
+  return 0;
 }
