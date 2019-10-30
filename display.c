@@ -20,7 +20,10 @@ void ShowConsoleCursor(int showFlag) {
 
 void printChar(SHORT x, SHORT y, const char* symbol, WORD color) {
     out = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD coord = {x, y};
+    COORD coord = {x + 1, y - 1};
+    COORD coord2 = {x + 1 , y};
+    COORD coord3 = {x , y - 1};
+    COORD coord4 = {x, y};
 
     WORD attribute = color;
     DWORD written;
@@ -28,4 +31,7 @@ void printChar(SHORT x, SHORT y, const char* symbol, WORD color) {
 
     // WriteConsoleOutputAttribute(out, &attribute, 1, coord, &written);
     WriteConsoleOutputCharacterA(out, symbol, 1, coord, &written);
+    WriteConsoleOutputCharacterA(out, symbol, 1, coord2, &written);
+    WriteConsoleOutputCharacterA(out, symbol, 1, coord3, &written);
+    WriteConsoleOutputCharacterA(out, symbol, 1, coord4, &written);
 }

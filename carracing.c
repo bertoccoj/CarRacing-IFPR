@@ -10,6 +10,16 @@ void initMatrix(char matrix[ROWS][COLUMS]) {
   }
 }
 
+void drawCar(int x, int y, char matrix[ROWS][COLUMS], int simbolo) {
+  matrix[y][x] = simbolo;
+  matrix[y + 1][x] = simbolo;
+  matrix[y + 2][x] = simbolo;
+  matrix[y + 1][x -1] = simbolo;
+  matrix[y + 1][x + 1] = simbolo;
+  matrix[y + 3][x + 1] = simbolo;
+  matrix[y + 3][x - 1] = simbolo;
+}
+
 void drawPista(char matrix[ROWS][COLUMS], int speed) {
   int i, j;
 
@@ -17,8 +27,8 @@ void drawPista(char matrix[ROWS][COLUMS], int speed) {
     matrix[i][0] = ASTERISCO;
     matrix[i][COLUMS - 1] = ASTERISCO;
     if (i % 2 != 0) {
-      matrix[i][1] = PISTA;
-      matrix[i][COLUMS - 2] = PISTA;
+      matrix[i][1] = PIXEL;
+      matrix[i][COLUMS - 2] = PIXEL;
     }
     for (j = 0; j < COLUMS; j++) {
       matrix[ROWS - 1][j] = '.';
@@ -63,7 +73,8 @@ void printGameMatrix(char matrix[ROWS][COLUMS]) {
 
   for (i = 0; i < ROWS; i++) {
     for (j = 0; j < COLUMS; j++) {
-      printChar(j + SCREEN_CENTER, i + 5, &matrix[i][j], FOREGROUND_BLUE);
+      printChar(j + SCREEN_CENTER + j, i + 5 + i, &matrix[i][j], FOREGROUND_BLUE);
+      // printChar(j + SCREEN_CENTER, i + 5, &matrix[i][j], FOREGROUND_BLUE);
     }
   }
 }
