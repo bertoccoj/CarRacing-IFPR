@@ -1,10 +1,12 @@
 #include "carracing.h"
 
 int main() {
+  SetConsoleTitle("CAR RACING - IFPR");
   system("mode con: cols=101 lines=60");
-
+  system("cls");  
+  ShowConsoleCursor(0);
   char gameMatrix[ROWS][COLUMS];
-  int gameOver;
+  int gameOver = 0;
   int keyPressed;
   int playerX, playerY;
   int speed = 2;
@@ -13,14 +15,19 @@ int main() {
   playerX = COLUMS + 4;
   playerY = ROWS - 6;
 
-  ShowConsoleCursor(0);
   // while (!gameMenu());
+  system("cls");
   initMatrix(gameMatrix);
   drawCar(playerX, playerY, gameMatrix, PIXEL);
-  system("cls");
+  initPista(gameMatrix);
+  drawPista(gameMatrix, speed);
+
   while (!gameOver) {
-    drawPista(gameMatrix, speed);
     speed++;
+    if (speed % 5 == 0) {
+      drawPista(gameMatrix, speed);
+    }
+
     if (kbhit()) {
       keyPressed = getch();
       switch (keyPressed) {
@@ -31,7 +38,7 @@ int main() {
           break;
         case KEY_A:
         case KEY_SMALL_A:
-        drawCar(playerX + 3, playerY, gameMatrix, EMPTY_PIXEL);
+          drawCar(playerX + 3, playerY, gameMatrix, EMPTY_PIXEL);
           drawCar(playerX, playerY, gameMatrix, PIXEL);
           break;
       }

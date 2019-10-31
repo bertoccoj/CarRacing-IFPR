@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "carracing.h": "c"
+        "carracing.h": "c",
+        "display.h": "c",
+        "windows.h": "c"
     }
 }
