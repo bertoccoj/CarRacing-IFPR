@@ -18,7 +18,7 @@ void ShowConsoleCursor(int showFlag) {
     SetConsoleCursorInfo(out, &cursorInfo);
 }
 
-void printChar(SHORT x, SHORT y, const char* symbol, WORD color) {
+void printChar(SHORT x, SHORT y, const char* symbol, int color) {
     out = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD coord = {x + 1, y - 1};
     COORD coord2 = {x + 1 , y};

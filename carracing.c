@@ -10,14 +10,26 @@ void initMatrix(char matrix[ROWS][COLUMS]) {
   }
 }
 
+int playerCollided(int x, int y, char matrix[ROWS][COLUMS]) {
+  if (
+    matrix[y - 1][x] != EMPTY_PIXEL
+    || matrix[y - 1][x + 1] != EMPTY_PIXEL
+    || matrix[y - 1][x - 1] != EMPTY_PIXEL
+    ){
+      return 1;
+    } else { 
+      return 0;
+    }
+}
+
 void drawCar(int x, int y, char matrix[ROWS][COLUMS], int simbolo) {
-  matrix[y][x] = simbolo;
-  matrix[y + 1][x] = simbolo;
-  matrix[y + 2][x] = simbolo;
-  matrix[y + 1][x -1] = simbolo;
-  matrix[y + 1][x + 1] = simbolo;
-  matrix[y + 3][x + 1] = simbolo;
-  matrix[y + 3][x - 1] = simbolo;
+  if (y + 2 >= 0 && y < ROWS - 2) matrix[y][x] = simbolo;
+  if (y + 3 >= 0 && y < ROWS - 3) matrix[y + 1][x] = simbolo;
+  if (y + 3 >= 0 && y < ROWS - 4) matrix[y + 2][x] = simbolo;
+  if (y + 3 >= 0 && y < ROWS - 3) matrix[y + 1][x -1] = simbolo;
+  if (y + 3 >= 0 && y < ROWS - 3) matrix[y + 1][x + 1] = simbolo;
+  if (y + 5 >= 0 && y < ROWS - 5) matrix[y + 3][x + 1] = simbolo;
+  if (y + 5 >= 0 && y < ROWS - 5) matrix[y + 3][x - 1] = simbolo;
 }
 
 void initPista(char matrix[ROWS][COLUMS]) {
