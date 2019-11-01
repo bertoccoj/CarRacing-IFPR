@@ -18,7 +18,7 @@ void ShowConsoleCursor(int showFlag) {
     SetConsoleCursorInfo(out, &cursorInfo);
 }
 
-void printChar(SHORT x, SHORT y, const char* symbol, int color) {
+void printChar(SHORT x, SHORT y, const int* symbol, int color) {
     out = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD coord = {x + 1, y - 1};
     COORD coord2 = {x + 1 , y};
@@ -27,10 +27,15 @@ void printChar(SHORT x, SHORT y, const char* symbol, int color) {
 
     WORD attribute = color;
     DWORD written;
+    char simbolo = *symbol;
 
-    // WriteConsoleOutputAttribute(out, &attribute, 1, coord, &written);
-    WriteConsoleOutputCharacterA(out, symbol, 1, coord, &written);
-    WriteConsoleOutputCharacterA(out, symbol, 1, coord2, &written);
-    WriteConsoleOutputCharacterA(out, symbol, 1, coord3, &written);
-    WriteConsoleOutputCharacterA(out, symbol, 1, coord4, &written);
+    WriteConsoleOutputAttribute(out, &attribute, 1, coord, &written);
+    WriteConsoleOutputAttribute(out, &attribute, 1, coord2, &written);
+    WriteConsoleOutputAttribute(out, &attribute, 1, coord3, &written);
+    WriteConsoleOutputAttribute(out, &attribute, 1, coord4, &written);
+
+    WriteConsoleOutputCharacterA(out, &simbolo, 1, coord, &written);
+    WriteConsoleOutputCharacterA(out, &simbolo, 1, coord2, &written);
+    WriteConsoleOutputCharacterA(out, &simbolo, 1, coord3, &written);
+    WriteConsoleOutputCharacterA(out, &simbolo, 1, coord4, &written);
 }
