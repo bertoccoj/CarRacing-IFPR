@@ -75,51 +75,61 @@ void drawPista(char matrix[ROWS][COLUMS], int speed) {
 }
 
 int gameMenu() {
-  int selectedOption;
+  int selectedOption = 1;
   int i;
+  int lineWidth = 85;
 
+  while(1) {
   gotoxy(0,0);
   
-  printf("\n\n\n\n\t\t\t");
+
+    printf("\n\n\n\n\t");
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-  for (i = 0; i < 50; i++) {
+    for (i = 0; i < lineWidth; i++) {
     printf("\xDB");
   }
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE);
-  printf("\n\t\t\t\t\tCar Racing\n");
-  printf("\n\n\n\n\t\t\t");
+    printf("\n\t\t\t\t\t     Car Racing\n");
+    printf("\t");
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-  for (i = 0; i < 50; i++) {
+    for (i = 0; i < lineWidth; i++) {
     printf("_");
   }
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
-  printf("\n\t\t\t\t\t1 - Novo Jogo");
-  printf("\n\t\t\t\t\t2 - High Scores");
-  printf("\n\t\t\t\t\t3 - Sair\n");
+    printf("\n\n\t\t\t\t        Selecione uma opcao\n");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), selectedOption == 1 ? BACKGROUND_RED : 1);
+    printf("\n\t\t\t\t\t 1 - Novo Jogo    ");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), selectedOption == 2 ? BACKGROUND_RED : 1);
+    printf("\n\t\t\t\t\t 2 - High Scores  ");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), selectedOption == 3 ? BACKGROUND_RED : 1);
+    printf("\n\t\t\t\t\t 3 - Sair         \n");
 
-  printf("\n\n\n\n\t\t\t");
+    printf("\n\t");
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-  for (i = 0; i < 50; i++) {
+    for (i = 0; i < lineWidth; i++) {
     printf("_");
   }
-  if (kbhit()) { selectedOption = getch(); }
+    if (kbhit()) { 
+      switch (getch()) {
+        case KEY_UP:
+          if (selectedOption > 1) {
+            selectedOption--;
+          }
+          break;
+        case KEY_DOWN:
+          if (selectedOption < 3) {
+            selectedOption++; 
+          }
+          break;
+        case KEY_SPACE_BAR:
+          return selectedOption;
+      }
+    }
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
-  printf("\n\t\t\t\tEntre com a opcao desejada %d\n", selectedOption);
-  printf("\n\n\n\n\t\t\t");
+    printf("\n\n\t");
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-  for (i = 0; i < 50; i++) {
+    for (i = 0; i < lineWidth; i++) {
     printf("\xDB");
   }
-  return selectedOption == MENU_NEW_GAME || selectedOption == MENU_HIGH_SCORES || selectedOption == MENU_QUIT;
-}
-
-void printGameMatrix(char matrix[ROWS][COLUMS]) {
-  int y, x;
-
-  for (y = 0; y < ROWS; y++) {
-    for (x = 0; x < COLUMS; x++) {
-      printChar(2 * x + SCREEN_CENTER, 2 * y + 5, &matrix[y][x], FOREGROUND_BLUE);
-      // printChar(j + SCREEN_CENTER, i + 5, &matrix[i][j], FOREGROUND_BLUE);
-    }
   }
 }
