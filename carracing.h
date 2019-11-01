@@ -26,7 +26,9 @@
 //----SIMBOLOS
 #define ASTERISCO 42
 #define EMPTY_PIXEL 32
-#define PIXEL 177
+#define PIXEL 176
+#define PIXEL2 177
+#define PIXEL3 178
 #define PIXEL_SOLID 219
 
 //----TECLAS
@@ -34,16 +36,27 @@
 #define KEY_DOWN 80
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
-#define SPACE_BAR 32
-#define ESCAPE 27
+#define KEY_SPACE_BAR 32
+#define KEY_ESCAPE 27
 #define KEY_A 65
 #define KEY_SMALL_A 97
 #define KEY_D 83
 #define KEY_SMALL_D 100
+#define KEY_W 119
+#define KEY_SMALL_W 87
+
+//----CONDIÇÕES LÓGICAS
+#define true 1
+#define false 0
+
+//----GAME-VARS
+#define ENEMY_NUMBER 10
+#define ENEMY_DISTANCE -11
 
 typedef struct {
     int x;
     int y;
+    int color;
 } car;
 
 typedef struct {
