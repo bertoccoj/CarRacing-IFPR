@@ -51,6 +51,11 @@ typedef struct {
     int color;
 } gamePixel;
 
+typedef struct {
+    char nome[100];
+    int pontos;
+} gamer;
+
 int gameMenu();
 void printGameMatrix(char matrix[ROWS][COLUMS]);
 void initMatrix(char matrix[ROWS][COLUMS]);
