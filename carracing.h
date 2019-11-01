@@ -70,9 +70,11 @@ typedef struct {
 } gamer;
 
 int gameMenu();
-void printGameMatrix(char matrix[ROWS][COLUMS]);
-void initMatrix(char matrix[ROWS][COLUMS]);
-void drawPista(char matrix[ROWS][COLUMS], int speed);
-void drawCar(int x, int y, char matrix[ROWS][COLUMS], int simbolo);
-void initPista(char matrix[ROWS][COLUMS]);
-int playerCollided(int x, int y, char matrix[ROWS][COLUMS]);
+void printGameMatrix(gamePixel matrix[ROWS][COLUMS]);
+void initMatrix(gamePixel matrix[ROWS][COLUMS]);
+void drawPista(gamePixel matrix[ROWS][COLUMS]);
+void drawCar(int x, int y, gamePixel matrix[ROWS][COLUMS], int simbolo, int color);
+void initPista(gamePixel matrix[ROWS][COLUMS]);
+int playerCollided(int x, int y, gamePixel matrix[ROWS][COLUMS]);
+void initEnemies(car enemies[ENEMY_NUMBER]);
+void drawEnemies(car enemies[ENEMY_NUMBER], gamePixel matrix[ROWS][COLUMS], int clear);
