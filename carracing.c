@@ -129,18 +129,18 @@ int gameMenu() {
     
 
     printf("\n\n\n\n\t");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_RED);
     for (i = 0; i < lineWidth; i++) {
       printf("\xDB");
     }
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_BLUE);
     printf("\n\t\t\t\t\t     Car Racing\n");
     printf("\t");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_RED);
     for (i = 0; i < lineWidth; i++) {
       printf("_");
     }
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_GREEN);
     printf("\n\n\t\t\t\t        Selecione uma opcao\n");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), selectedOption == 1 ? BACKGROUND_RED : 1);
     printf("\n\t\t\t\t\t 1 - Novo Jogo    ");

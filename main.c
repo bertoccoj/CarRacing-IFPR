@@ -21,9 +21,14 @@ int main() {
   car enemies[ENEMY_NUMBER];
   int t;
   initEnemies(enemies);
-  // int opcaoMenu = gameMenu();
+  switch (gameMenu()) {
+    case MENU_NEW_GAME: break;
+    case MENU_HIGH_SCORES: break;
+    case MENU_QUIT: exit(0);
+  }
 
-  // system("cls");
+  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_WHITE);
+  system("cls");
   initMatrix(gameMatrix);
   drawCar(player.x, player.y, gameMatrix, PIXEL_SOLID, player.color);
   drawEnemies(enemies, gameMatrix, false);
@@ -38,7 +43,7 @@ int main() {
       printf("\nciclps: %d", cycles);
       printf("\ngameOver: %d", gameOver);
     #endif
-    printf("\n\n\n\n\n\t\t\t\t\t\t\t\t\tScore: %d", score);
+    printf("\n\n\n\n\t\t\t\t\t\t\t\t\tScore: %d", score);
     printf("\n\t\t\t\t\t\t\t\t\tFase: %d", currentStage);
 
     cycles++;

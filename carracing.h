@@ -3,9 +3,9 @@
 #include <conio.h>
 #include "display.h"
 //----OPÇÕES DO MENU
-#define MENU_NEW_GAME 49
-#define MENU_HIGH_SCORES 50
-#define MENU_QUIT 51
+#define MENU_NEW_GAME 1
+#define MENU_HIGH_SCORES 2
+#define MENU_QUIT 3
 
 //----OPÇÕES DA TELA
 #define SCREEN_CENTER 38
@@ -57,8 +57,8 @@
 #define false 0
 
 //----GAME-VARS
-#define ENEMY_NUMBER 10
-#define ENEMY_DISTANCE -11
+#define ENEMY_NUMBER 3
+#define ENEMY_DISTANCE -13
 
 typedef struct {
     int x;
