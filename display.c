@@ -29,10 +29,12 @@ void printChar(SHORT x, SHORT y, const int* symbol, int color) {
     DWORD written;
     char simbolo = *symbol;
 
-    WriteConsoleOutputAttribute(out, &attribute, 1, coord, &written);
-    WriteConsoleOutputAttribute(out, &attribute, 1, coord2, &written);
-    WriteConsoleOutputAttribute(out, &attribute, 1, coord3, &written);
-    WriteConsoleOutputAttribute(out, &attribute, 1, coord4, &written);
+    #if COLOR == 1
+        WriteConsoleOutputAttribute(out, &attribute, 1, coord, &written);
+        WriteConsoleOutputAttribute(out, &attribute, 1, coord2, &written);
+        WriteConsoleOutputAttribute(out, &attribute, 1, coord3, &written);
+        WriteConsoleOutputAttribute(out, &attribute, 1, coord4, &written);
+    #endif
 
     WriteConsoleOutputCharacterA(out, &simbolo, 1, coord, &written);
     WriteConsoleOutputCharacterA(out, &simbolo, 1, coord2, &written);

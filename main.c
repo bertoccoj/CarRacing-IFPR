@@ -15,7 +15,7 @@ int main() {
   int score = 0;
 
   //inicialização do player
-  car player = { COLUMS + 4, ROWS - 6, CLR_BLUE };
+  car player = { COLUMS + 4, ROWS - 6, COLOR_BLUE };
 
   //inicialização dos inimigos
   car enemies[ENEMY_NUMBER];
@@ -74,7 +74,7 @@ int main() {
 //--Key events
     if (kbhit()) {
       keyPressed = getch();
-      drawCar(player.x, player.y, gameMatrix, PIXEL, CLR_GRAY);
+      drawCar(player.x, player.y, gameMatrix, PIXEL, COLOR_GRAY);
       switch (keyPressed) {
         case KEY_D:
         case KEY_SMALL_D:

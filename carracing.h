@@ -13,15 +13,22 @@
 #define COLUMS 13
 
 //----CORES
-#define CLR_BLACK 0
-#define CLR_BLUE 1
-#define CLR_GREEN 2
-#define CLR_LIGHT_BLUE 3
-#define CLR_RED 4
-#define CLR_PURPLE 5
-#define CLR_YELLOW 6
-#define CLR_WHITE 7
-#define CLR_GRAY 8
+#define COLOR_BLACK 0
+#define COLOR_BLUE 1
+#define COLOR_GREEN 2
+#define COLOR_AQUA 3
+#define COLOR_RED 4
+#define COLOR_PURPLE 5
+#define COLOR_YELLOW 6
+#define COLOR_WHITE 7
+#define COLOR_GRAY 8
+#define COLOR_LIGHT_BLUE 9
+#define COLOR_LIGHT_GREEN 0xA
+#define COLOR_LIGHT_AQUA 0xB
+#define COLOR_LIGHT_RED 0xC
+#define COLOR_LIGHT_PURPLE 0xD
+#define COLOR_LIGHT_YELLOW 0xE
+#define COLOR_BRIGHT_WHITE 0xF
 
 //----SIMBOLOS
 #define ASTERISCO 42

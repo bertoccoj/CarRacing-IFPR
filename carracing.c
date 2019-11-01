@@ -6,7 +6,7 @@ void initMatrix(gamePixel matrix[ROWS][COLUMS]) {
   for (y = 0; y < ROWS; y++) {
     for (x = 0; x < COLUMS; x++) {
       matrix[y][x].simbolo = PIXEL;
-      matrix[y][x].color = CLR_GRAY;
+      matrix[y][x].color = COLOR_GRAY;
     }
   }
 }
@@ -46,7 +46,7 @@ void initEnemies(car enemies[ENEMY_NUMBER]){
     car dummy = { 
       rand() % 100 > 50 ? COLUMS + 4 : COLUMS + 8,
       t * (ENEMY_DISTANCE),
-      CLR_GREEN
+      COLOR_GREEN
     };
     enemies[t - 1] = dummy;
   }
@@ -55,13 +55,13 @@ void initEnemies(car enemies[ENEMY_NUMBER]){
 void drawEnemies(car enemies[ENEMY_NUMBER], gamePixel matrix[ROWS][COLUMS], int clear) {
   int i;
   for(i = 0; i < ENEMY_NUMBER; i++) {
-    drawCar(enemies[i].x, enemies[i].y, matrix, clear ? PIXEL : PIXEL_SOLID, clear ? CLR_GRAY : enemies[i].color);
+    drawCar(enemies[i].x, enemies[i].y, matrix, clear ? PIXEL : PIXEL_SOLID, clear ? COLOR_GRAY : enemies[i].color);
   }
 }
 
 void initPista(gamePixel matrix[ROWS][COLUMS]) {
-  gamePixel bordaOut = { PIXEL, CLR_GREEN };
-  gamePixel bottom = { PIXEL2, CLR_YELLOW };
+  gamePixel bordaOut = { PIXEL, COLOR_GREEN };
+  gamePixel bottom = { PIXEL2, COLOR_YELLOW };
   int i, j;
 
   for (i = 0; i < ROWS; i++) {
@@ -77,29 +77,29 @@ void clearPista(gamePixel matrix[ROWS][COLUMS]) {
   int i;
   for (i = 0; i < ROWS - 1; i++) {
     matrix[i][1].simbolo = EMPTY_PIXEL;
-    matrix[i][1].color = CLR_BLACK;
+    matrix[i][1].color = COLOR_BLACK;
     matrix[i][COLUMS - 2].simbolo = EMPTY_PIXEL;
-    matrix[i][COLUMS - 2].color = CLR_BLACK;
+    matrix[i][COLUMS - 2].color = COLOR_BLACK;
     matrix[i][COLUMS / 2].simbolo = PIXEL;
-    matrix[i][COLUMS / 2].color = CLR_GRAY;
+    matrix[i][COLUMS / 2].color = COLOR_GRAY;
   }
 }
 
 void drawPista(gamePixel matrix[ROWS][COLUMS]) {
   gamePixel bordain;
-  gamePixel center = { PIXEL, CLR_YELLOW };
+  gamePixel center = { PIXEL, COLOR_LIGHT_YELLOW };
   int i, j;
 
   bordain.simbolo = PIXEL_SOLID;
 
-  if (matrix[0][1].color != CLR_WHITE) {
+  if (matrix[0][1].color != COLOR_WHITE) {
     clearPista(matrix);
     for (i = 0; i < ROWS - 1; i++) {
       if (i % 2 != 0) {
-        bordain.color = CLR_RED;
+        bordain.color = COLOR_RED;
       } else {
         matrix[i][COLUMS / 2] = center;
-        bordain.color = CLR_WHITE;
+        bordain.color = COLOR_WHITE;
       }
       matrix[i][1] = bordain;
       matrix[i][COLUMS - 2] = bordain;
@@ -108,10 +108,10 @@ void drawPista(gamePixel matrix[ROWS][COLUMS]) {
     clearPista(matrix);
     for (i = 0; i < ROWS - 1; i++) {
       if (i % 2 == 0) {
-        bordain.color = CLR_RED;
+        bordain.color = COLOR_RED;
       } else {
         matrix[i][COLUMS / 2] = center;
-        bordain.color = CLR_WHITE;
+        bordain.color = COLOR_WHITE;
       }
       matrix[i][1] = bordain;
       matrix[i][COLUMS - 2] = bordain;
