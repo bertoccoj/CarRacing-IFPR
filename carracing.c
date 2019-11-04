@@ -119,6 +119,73 @@ void drawPista(gamePixel matrix[ROWS][COLUMS]) {
   }
 }
 
+void askPlayerName(gamer *player) {
+  system("cls");
+  printf("Digite seu nome: ");
+  scanf("%[a-z A-Z]", player->name);
+}
+
+int gameOverScreen(gamer player) {
+  int selectedOption = 1;
+  int i;
+  int lineWidth = 85;
+
+  system("cls");
+  while(1) {
+    gotoxy(0,0);
+
+    printf("\n\n\n\n\t");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_RED);
+    for (i = 0; i < lineWidth; i++) {
+      printf("\xDB");
+    }
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_RED);
+    printf("\n\n\t\t\t\t\t\tGAME OVER\n");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_GREEN);
+    printf("\n\t\t\t\t\t%s -- %d pontos\n", player.name, player.score);
+    printf("\t");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_RED);
+    for (i = 0; i < lineWidth; i++) {
+      printf("_");
+    }
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_GREEN);
+    printf("\n\n\t\t\t\t        Deseja tentar novamente?\n");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), selectedOption == 1 ? BACKGROUND_RED : 1);
+    printf("\n\t\t\t\t\t\t    SIM    ");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), selectedOption == 2 ? BACKGROUND_RED : 1);
+    printf("\n\t\t\t\t\t\t    NAO    ");
+
+    printf("\n\t");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+    for (i = 0; i < lineWidth; i++) {
+      printf("_");
+    }
+    if (kbhit()) { 
+      switch (getch()) {
+        case KEY_UP:
+          if (selectedOption > 1) {
+            selectedOption--;
+          }
+          break;
+        case KEY_DOWN:
+          if (selectedOption < 2) {
+            selectedOption++;
+          }
+          break;
+        case KEY_SPACE_BAR:
+        case KEY_RETURN:
+          return selectedOption;
+      }
+    }
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+    printf("\n\n\t");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+    for (i = 0; i < lineWidth; i++) {
+      printf("\xDB");
+    }
+  }
+}
+
 int gameMenu() {
   int selectedOption = 1;
   int i;
@@ -156,17 +223,21 @@ int gameMenu() {
     }
     if (kbhit()) { 
       switch (getch()) {
+        case KEY_W:
+        case KEY_SMALL_W:
         case KEY_UP:
           if (selectedOption > 1) {
             selectedOption--;
           }
           break;
+        case KEY_S:
         case KEY_DOWN:
           if (selectedOption < 3) {
             selectedOption++; 
           }
           break;
         case KEY_SPACE_BAR:
+        case KEY_RETURN:
           return selectedOption;
       }
     }

@@ -10,27 +10,32 @@ int main() {
   int keyPressed;
   int refreshRate = 4;
   int currentStage = 1;
-  int speedModifyer = 2;
+  int speedModifier = 2;
   int cycles = 0;
-  int score = 0;
 
-  //inicialização do player
-  car player = { COLUMS + 4, ROWS - 6, COLOR_BLUE };
+  // inicialização do player
+  gamer player;
+  car playerCar = { COLUMS + 4, ROWS - 6, COLOR_BLUE };
 
-  //inicialização dos inimigos
-  car enemies[ENEMY_NUMBER];
-  int t;
-  initEnemies(enemies);
+  // menu do jogo
+  
   switch (gameMenu()) {
-    case MENU_NEW_GAME: break;
+    case MENU_NEW_GAME: 
+      askPlayerName(&player);
+      break;
     case MENU_HIGH_SCORES: break;
     case MENU_QUIT: exit(0);
   }
 
+  // inicialização dos inimigos
+  car enemies[ENEMY_NUMBER];
+  int t;
+  initEnemies(enemies);
+
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_WHITE);
-  system("cls");
+  system("cls");        
   initMatrix(gameMatrix);
-  drawCar(player.x, player.y, gameMatrix, PIXEL_SOLID, player.color);
+  drawCar(playerCar.x, playerCar.y, gameMatrix, PIXEL_SOLID, playerCar.color);
   drawEnemies(enemies, gameMatrix, false);
   initPista(gameMatrix);
   drawPista(gameMatrix);
@@ -38,21 +43,22 @@ int main() {
   while (!gameOver) {
     gotoxy(0,0);
     #if DEBUG == 1
-      printf("Player X: %d \nPlayer Y: %d\n", player.x, player.y);
-      printf("\nSpeedModifier: %d", speedModifyer);
+      printf("playerCar X: %d \nplayerCar Y: %d\n", playerCar.x, playerCar.y);
+      printf("\nSpeedModifier: %d", speedModifier);
       printf("\nciclps: %d", cycles);
       printf("\ngameOver: %d", gameOver);
     #endif
-    printf("\n\n\n\n\t\t\t\t\t\t\t\t\tScore: %d", score);
-    printf("\n\t\t\t\t\t\t\t\t\tFase: %d", currentStage);
+    printf("\n\n\n\n\t\t\t\t\t\t\t\t\t%s - Score: %d", player.name, player.score);
+    printf("\n\t\t\t\t\t\t\t\t\t%s - Fase: %d", currentStage);
 
-    cycles++;
-    if (cycles >= 800) {
-      speedModifyer = 1;
+    if (cycles < 800) {
+      cycles++;
+    } else {
+      speedModifier = 1;
       currentStage = 2;
     }
 
-    if (cycles % speedModifyer == 0) {
+    if (cycles % speedModifier == 0) {
       drawPista(gameMatrix);
       
       int w;
@@ -65,7 +71,7 @@ int main() {
       // verifica se cada inimigo desapareceu da tela
       for (w = 0; w < ENEMY_NUMBER; w++) {
         if (enemies[w].y == ROWS - 1) {
-          score += 50;
+          player.score += 50;
         }
       }
 
@@ -74,38 +80,41 @@ int main() {
         initEnemies(enemies);
       }
     }
-    drawCar(player.x, player.y, gameMatrix, PIXEL_SOLID, player.color);
+    drawCar(playerCar.x, playerCar.y, gameMatrix, PIXEL_SOLID, playerCar.color);
 
-//--Key events
+    // Key events
     if (kbhit()) {
       keyPressed = getch();
-      drawCar(player.x, player.y, gameMatrix, PIXEL, COLOR_GRAY);
+      drawCar(playerCar.x, playerCar.y, gameMatrix, PIXEL, COLOR_GRAY);
       switch (keyPressed) {
         case KEY_D:
         case KEY_SMALL_D:
         case KEY_RIGHT:
-          if (player.x != COLUMS + 8) { player.x ++; }
+          if (playerCar.x != COLUMS + 8) { playerCar.x ++; }
           break;
         case KEY_A:
         case KEY_SMALL_A:
         case KEY_LEFT:
-          if (player.x != COLUMS + 4) { player.x --; }
+          if (playerCar.x != COLUMS + 4) { playerCar.x --; }
           break;
         case KEY_SPACE_BAR:
           if (cycles >= 800) {
-            speedModifyer = 1;
+            speedModifier = 1;
           } else {
-            speedModifyer = speedModifyer == 1 && cycles < 800 ? 2 : 1;
+            speedModifier = speedModifier == 1 && cycles < 800 ? 2 : 1;
           }
           break;
       }
-      drawCar(player.x, player.y, gameMatrix, PIXEL_SOLID, player.color);
+      drawCar(playerCar.x, playerCar.y, gameMatrix, PIXEL_SOLID, playerCar.color);
     }
 
-    if (playerCollided(player.x, player.y, gameMatrix)) {
+    if (playerCollided(playerCar.x, playerCar.y, gameMatrix)) {
       gameOver = 1;
     }
     printGameMatrix(gameMatrix);
+  }
+  if (gameOver) {
+    gameOverScreen(player);
   }
   system("pause");
   return 0;

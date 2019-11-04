@@ -1,2 +1,2 @@
-gcc carracing.c display.c main.c -o game -D DEBUG=1 -D COLOR=1
+gcc carracing.c display.c main.c -o game -D DEBUG=0 -D COLOR=1
 start .\game.exe
