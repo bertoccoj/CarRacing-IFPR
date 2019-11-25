@@ -1,8 +1,9 @@
 #include "carracing.h"
 
 int main() {
+  // altera configurações do console
   SetConsoleTitle("CAR RACING - IFPR");
-  system("mode con: cols=101 lines=60");
+  system("mode con: cols=101 lines=70");
   system("cls");
   ShowConsoleCursor(0);
   gamePixel gameMatrix[ROWS][COLUMS];
@@ -49,7 +50,7 @@ int main() {
       printf("\ngameOver: %d", gameOver);
     #endif
     printf("\n\n\n\n\t\t\t\t\t\t\t\t\t%s - Score: %d", player.name, player.score);
-    printf("\n\t\t\t\t\t\t\t\t\t%s - Fase: %d", currentStage);
+    printf("\n\t\t\t\t\t\t\t\t\tFase: %d", currentStage);
 
     if (cycles < 800) {
       cycles++;
@@ -60,7 +61,7 @@ int main() {
 
     if (cycles % speedModifier == 0) {
       drawPista(gameMatrix);
-      
+
       int w;
       drawEnemies(enemies, gameMatrix, true);
       for (w = 0; w < ENEMY_NUMBER; w++) {
@@ -101,7 +102,7 @@ int main() {
           if (cycles >= 800) {
             speedModifier = 1;
           } else {
-            speedModifier = speedModifier == 1 && cycles < 800 ? 2 : 1;
+            speedModifier = speedModifier == 1 ? 2 : 1;
           }
           break;
       }

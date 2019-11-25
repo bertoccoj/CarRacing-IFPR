@@ -31,7 +31,6 @@
 #define COLOR_BRIGHT_WHITE 0xF
 
 //----SIMBOLOS
-#define ASTERISCO 42
 #define EMPTY_PIXEL 32
 #define PIXEL 176
 #define PIXEL2 177

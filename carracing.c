@@ -22,8 +22,7 @@ void printGameMatrix(gamePixel matrix[ROWS][COLUMS]) {
 }
 
 int playerCollided(int x, int y, gamePixel matrix[ROWS][COLUMS]) {
-  return matrix[y - 1][x].simbolo != PIXEL
-      || matrix[y - 1][x + 1].simbolo != PIXEL
+  return matrix[y - 1][x + 1].simbolo != PIXEL 
       || matrix[y - 1][x - 1].simbolo != PIXEL
         ? 1 : 0;
 }
@@ -126,6 +125,7 @@ void askPlayerName(gamer *player) {
 }
 
 int gameOverScreen(gamer player) {
+  HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
   int selectedOption = 1;
   int i;
   int lineWidth = 85;
@@ -135,28 +135,28 @@ int gameOverScreen(gamer player) {
     gotoxy(0,0);
 
     printf("\n\n\n\n\t");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_RED);
+    SetConsoleTextAttribute(out, COLOR_RED);
     for (i = 0; i < lineWidth; i++) {
       printf("\xDB");
     }
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_RED);
+    SetConsoleTextAttribute(out, COLOR_RED);
     printf("\n\n\t\t\t\t\t\tGAME OVER\n");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_GREEN);
+    SetConsoleTextAttribute(out, COLOR_GREEN);
     printf("\n\t\t\t\t\t%s -- %d pontos\n", player.name, player.score);
     printf("\t");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_RED);
+    SetConsoleTextAttribute(out, COLOR_RED);
     for (i = 0; i < lineWidth; i++) {
       printf("_");
     }
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_GREEN);
+    SetConsoleTextAttribute(out, COLOR_GREEN);
     printf("\n\n\t\t\t\t        Deseja tentar novamente?\n");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), selectedOption == 1 ? BACKGROUND_RED : 1);
+    SetConsoleTextAttribute(out, selectedOption == 1 ? BACKGROUND_RED : 1);
     printf("\n\t\t\t\t\t\t    SIM    ");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), selectedOption == 2 ? BACKGROUND_RED : 1);
+    SetConsoleTextAttribute(out, selectedOption == 2 ? BACKGROUND_RED : 1);
     printf("\n\t\t\t\t\t\t    NAO    ");
 
     printf("\n\t");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+    SetConsoleTextAttribute(out, FOREGROUND_RED);
     for (i = 0; i < lineWidth; i++) {
       printf("_");
     }
@@ -177,9 +177,9 @@ int gameOverScreen(gamer player) {
           return selectedOption;
       }
     }
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+    SetConsoleTextAttribute(out, FOREGROUND_GREEN);
     printf("\n\n\t");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+    SetConsoleTextAttribute(out, FOREGROUND_RED);
     for (i = 0; i < lineWidth; i++) {
       printf("\xDB");
     }
@@ -190,34 +190,34 @@ int gameMenu() {
   int selectedOption = 1;
   int i;
   int lineWidth = 85;
-
+  HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
   while(1) {
     gotoxy(0,0);
     
 
     printf("\n\n\n\n\t");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_RED);
+    SetConsoleTextAttribute(out, COLOR_RED);
     for (i = 0; i < lineWidth; i++) {
       printf("\xDB");
     }
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_BLUE);
+    SetConsoleTextAttribute(out, COLOR_BLUE);
     printf("\n\t\t\t\t\t     Car Racing\n");
     printf("\t");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_RED);
+    SetConsoleTextAttribute(out, COLOR_RED);
     for (i = 0; i < lineWidth; i++) {
       printf("_");
     }
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_GREEN);
+    SetConsoleTextAttribute(out, COLOR_GREEN);
     printf("\n\n\t\t\t\t        Selecione uma opcao\n");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), selectedOption == 1 ? BACKGROUND_RED : 1);
+    SetConsoleTextAttribute(out, selectedOption == 1 ? BACKGROUND_RED : 1);
     printf("\n\t\t\t\t\t 1 - Novo Jogo    ");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), selectedOption == 2 ? BACKGROUND_RED : 1);
+    SetConsoleTextAttribute(out, selectedOption == 2 ? BACKGROUND_RED : 1);
     printf("\n\t\t\t\t\t 2 - High Scores  ");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), selectedOption == 3 ? BACKGROUND_RED : 1);
+    SetConsoleTextAttribute(out, selectedOption == 3 ? BACKGROUND_RED : 1);
     printf("\n\t\t\t\t\t 3 - Sair         \n");
 
     printf("\n\t");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+    SetConsoleTextAttribute(out, FOREGROUND_RED);
     for (i = 0; i < lineWidth; i++) {
       printf("_");
     }
@@ -241,9 +241,9 @@ int gameMenu() {
           return selectedOption;
       }
     }
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+    SetConsoleTextAttribute(out, FOREGROUND_GREEN);
     printf("\n\n\t");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+    SetConsoleTextAttribute(out, FOREGROUND_RED);
     for (i = 0; i < lineWidth; i++) {
       printf("\xDB");
     }
