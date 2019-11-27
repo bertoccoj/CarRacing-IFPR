@@ -13,6 +13,7 @@ int main() {
   int currentStage = 1;
   int speedModifier = 2;
   int cycles = 0;
+  int collided = 0;
 
   // inicialização do player
   gamer player;
@@ -46,8 +47,11 @@ int main() {
     #if DEBUG == 1
       printf("playerCar X: %d \nplayerCar Y: %d\n", playerCar.x, playerCar.y);
       printf("\nSpeedModifier: %d", speedModifier);
+      printf("\nRIGHT_STREET_SIDE: %d", RIGHT_STREET_SIDE);
+      printf("\nLEFT_STREET_SIDE: %d", LEFT_STREET_SIDE);
       printf("\nciclps: %d", cycles);
       printf("\ngameOver: %d", gameOver);
+      printf("\ncollided: %d", collided);
     #endif
     printf("\n\n\n\n\t\t\t\t\t\t\t\t\t%s - Score: %d", player.name, player.score);
     printf("\n\t\t\t\t\t\t\t\t\tFase: %d", currentStage);
@@ -91,12 +95,14 @@ int main() {
         case KEY_D:
         case KEY_SMALL_D:
         case KEY_RIGHT:
-          if (playerCar.x != COLUMS + 8) { playerCar.x ++; }
+          playerCar.x = RIGHT_STREET_SIDE;
+          // if (playerCar.x != COLUMS + 8) { playerCar.x ++; }
           break;
         case KEY_A:
         case KEY_SMALL_A:
         case KEY_LEFT:
-          if (playerCar.x != COLUMS + 4) { playerCar.x --; }
+          playerCar.x = LEFT_STREET_SIDE;
+          // if (playerCar.x != COLUMS + 4) { playerCar.x --; }
           break;
         case KEY_SPACE_BAR:
           if (cycles >= 800) {
@@ -109,12 +115,14 @@ int main() {
       drawCar(playerCar.x, playerCar.y, gameMatrix, PIXEL_SOLID, playerCar.color);
     }
 
-    if (playerCollided(playerCar.x, playerCar.y, gameMatrix)) {
-      gameOver = 1;
+    collided = playerCollided(playerCar.x, playerCar.y, gameMatrix) || playerCollidedSides(playerCar, gameMatrix);
+    if (collided) {
+      gameOver = true;
     }
     printGameMatrix(gameMatrix);
   }
   if (gameOver) {
+    system("pause");
     gameOverScreen(player);
   }
   system("pause");

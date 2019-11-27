@@ -22,9 +22,17 @@ void printGameMatrix(gamePixel matrix[ROWS][COLUMS]) {
 }
 
 int playerCollided(int x, int y, gamePixel matrix[ROWS][COLUMS]) {
-  return matrix[y - 1][x + 1].simbolo != PIXEL 
-      || matrix[y - 1][x - 1].simbolo != PIXEL
-        ? 1 : 0;
+  return matrix[y - 1][x].simbolo != PIXEL;
+}
+
+int playerCollidedSides(car player, gamePixel matrix[ROWS][COLUMS]) {
+  switch (player.x) {
+    case LEFT_STREET_SIDE: 
+      return matrix[player.y - 1][LEFT_STREET_SIDE].simbolo != PIXEL || matrix[player.y + 3][LEFT_STREET_SIDE].simbolo != PIXEL;
+    case RIGHT_STREET_SIDE: 
+      return matrix[player.y - 1][RIGHT_STREET_SIDE].simbolo != PIXEL || matrix[player.y + 3][RIGHT_STREET_SIDE].simbolo != PIXEL;
+    default: return 0;
+  }
 }
 
 void drawCar(int x, int y, gamePixel matrix[ROWS][COLUMS], int simbolo, int color) {

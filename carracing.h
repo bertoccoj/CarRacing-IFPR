@@ -12,6 +12,9 @@
 #define ROWS 25
 #define COLUMS 13
 
+#define LEFT_STREET_SIDE COLUMS + 4
+#define RIGHT_STREET_SIDE COLUMS + 8
+
 //----CORES
 #define COLOR_BLACK 0
 #define COLOR_BLUE 1
@@ -89,3 +92,4 @@ void initEnemies(car enemies[ENEMY_NUMBER]);
 void drawEnemies(car enemies[ENEMY_NUMBER], gamePixel matrix[ROWS][COLUMS], int clear);
 int gameOverScreen(gamer player);
 void askPlayerName(gamer *player);
+int playerCollidedSides(car player, gamePixel matrix[ROWS][COLUMS]);
