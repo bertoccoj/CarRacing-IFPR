@@ -3,7 +3,13 @@
 int main() {
   // altera configurações do console
   SetConsoleTitle("CAR RACING - IFPR");
-  system("mode con: cols=101 lines=70");
+  setConsoleInfo();
+  SMALL_RECT windowSize = {0, 0, 101, 80};
+  COORD bufferSize = {101, 57};
+  SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), TRUE, &windowSize);
+  SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), bufferSize);
+  
+  // system("mode con: cols=101 lines=70");
   system("cls");
   ShowConsoleCursor(0);
   gamePixel gameMatrix[ROWS][COLUMS];
@@ -21,24 +27,24 @@ int main() {
 
   // menu do jogo
   
-  switch (gameMenu()) {
-    case MENU_NEW_GAME: 
-      askPlayerName(&player);
-      break;
-    case MENU_HIGH_SCORES: break;
-    case MENU_QUIT: exit(0);
-  }
+  // switch (gameMenu()) {
+  //   case MENU_NEW_GAME: 
+  //     askPlayerName(&player);
+  //     break;
+  //   case MENU_HIGH_SCORES: break;
+  //   case MENU_QUIT: exit(0);
+  // }
 
   // inicialização dos inimigos
-  car enemies[ENEMY_NUMBER];
+  car adversarios[ENEMY_NUMBER];
   int t;
-  initEnemies(enemies);
+  initEnemies(adversarios);
 
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_WHITE);
   system("cls");        
   initMatrix(gameMatrix);
   drawCar(playerCar.x, playerCar.y, gameMatrix, PIXEL_SOLID, playerCar.color);
-  drawEnemies(enemies, gameMatrix, false);
+  drawEnemies(adversarios, gameMatrix, false);
   initPista(gameMatrix);
   drawPista(gameMatrix);
 
@@ -64,25 +70,26 @@ int main() {
     }
 
     if (cycles % speedModifier == 0) {
+      // Sleep(0);
       drawPista(gameMatrix);
 
       int w;
-      drawEnemies(enemies, gameMatrix, true);
+      drawEnemies(adversarios, gameMatrix, true);
       for (w = 0; w < ENEMY_NUMBER; w++) {
-        enemies[w].y++;
+        adversarios[w].y++;
       }
-      drawEnemies(enemies, gameMatrix, false);
+      drawEnemies(adversarios, gameMatrix, false);
 
       // verifica se cada inimigo desapareceu da tela
       for (w = 0; w < ENEMY_NUMBER; w++) {
-        if (enemies[w].y == ROWS - 1) {
+        if (adversarios[w].y == ROWS - 1) {
           player.score += 50;
         }
       }
 
       // reseta inimigos quando todos desapareceram
-      if (enemies[ENEMY_NUMBER - 1].y >= ROWS - 1) {
-        initEnemies(enemies);
+      if (adversarios[ENEMY_NUMBER - 1].y >= ROWS - 1) {
+        initEnemies(adversarios);
       }
     }
     drawCar(playerCar.x, playerCar.y, gameMatrix, PIXEL_SOLID, playerCar.color);
@@ -115,10 +122,10 @@ int main() {
       drawCar(playerCar.x, playerCar.y, gameMatrix, PIXEL_SOLID, playerCar.color);
     }
 
-    collided = playerCollided(playerCar.x, playerCar.y, gameMatrix) || playerCollidedSides(playerCar, gameMatrix);
-    if (collided) {
-      gameOver = true;
-    }
+    // collided = playerCollided(playerCar.x, playerCar.y, gameMatrix) || playerCollidedSides(playerCar, gameMatrix);
+    // if (collided) {
+    //   gameOver = true;
+    // }
     printGameMatrix(gameMatrix);
   }
   if (gameOver) {

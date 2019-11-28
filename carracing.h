@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include "display.h"
+
 //----OPÇÕES DO MENU
 #define MENU_NEW_GAME 1
 #define MENU_HIGH_SCORES 2

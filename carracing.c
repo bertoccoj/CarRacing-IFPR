@@ -13,12 +13,16 @@ void initMatrix(gamePixel matrix[ROWS][COLUMS]) {
 
 void printGameMatrix(gamePixel matrix[ROWS][COLUMS]) {
   int y, x;
+  CHAR_INFO consoleBuffer[ROWS * COLUMS];
 
   for (y = 0; y < ROWS; y++) {
     for (x = 0; x < COLUMS; x++) {
+      // consoleBuffer[x + COLUMS * y].Char.AsciiChar = (unsigned char)matrix[y][x].simbolo;
+      // consoleBuffer[x + ROWS * y].Attributes = matrix[y][x].color;
       printChar(2 * x + SCREEN_CENTER, 2 * y + 5, &matrix[y][x].simbolo, matrix[y][x].color);
     }
   }
+  // printTeste(consoleBuffer);
 }
 
 int playerCollided(int x, int y, gamePixel matrix[ROWS][COLUMS]) {
