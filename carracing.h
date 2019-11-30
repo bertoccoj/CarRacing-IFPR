@@ -79,14 +79,25 @@ typedef struct {
 
 typedef struct {
     char name[100];
+    car car;
+    int hasCollided;
     int score;
 } gamer;
+
+typedef struct {
+  int gameOver;
+  int quit;
+  int currentStage;
+  int currentSpeed;
+  int cycles;
+  gamer player;
+} state;
 
 int gameMenu();
 void printGameMatrix(gamePixel matrix[ROWS][COLUMS]);
 void initMatrix(gamePixel matrix[ROWS][COLUMS]);
 void drawPista(gamePixel matrix[ROWS][COLUMS]);
-void drawCar(int x, int y, gamePixel matrix[ROWS][COLUMS], int simbolo, int color);
+void drawCar(car car, gamePixel matrix[ROWS][COLUMS], int simbolo, int color);
 void initPista(gamePixel matrix[ROWS][COLUMS]);
 int playerCollided(int x, int y, gamePixel matrix[ROWS][COLUMS]);
 void initEnemies(car enemies[ENEMY_NUMBER]);
@@ -94,3 +105,5 @@ void drawEnemies(car enemies[ENEMY_NUMBER], gamePixel matrix[ROWS][COLUMS], int 
 int gameOverScreen(gamer player);
 void askPlayerName(gamer *player);
 int playerCollidedSides(car player, gamePixel matrix[ROWS][COLUMS]);
+
+state getInitialGameState();

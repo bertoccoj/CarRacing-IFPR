@@ -1,5 +1,25 @@
 #include "carracing.h"
 
+state getInitialGameState() {
+  gamer player = {
+    "",                                   // nome
+    { COLUMS + 4, ROWS - 6, COLOR_BLUE }, // car
+    false,                                // hasCollided
+    0,                                    // score
+  };                                      
+
+  //--estado inicial
+  state initialState = {
+    false,      // gameOver
+    false,      // quit
+    1,          // currentStage
+    2,          // currentSpeed
+    0,          // cycles
+    player,     // player
+  };
+  return initialState;
+}
+
 void initMatrix(gamePixel matrix[ROWS][COLUMS]) {
   int y, x;
 
@@ -17,12 +37,14 @@ void printGameMatrix(gamePixel matrix[ROWS][COLUMS]) {
 
   for (y = 0; y < ROWS; y++) {
     for (x = 0; x < COLUMS; x++) {
-      // consoleBuffer[x + COLUMS * y].Char.AsciiChar = (unsigned char)matrix[y][x].simbolo;
-      // consoleBuffer[x + ROWS * y].Attributes = matrix[y][x].color;
-      printChar(2 * x + SCREEN_CENTER, 2 * y + 5, &matrix[y][x].simbolo, matrix[y][x].color);
+      printChar(
+        ((SCALE/2) * x) + SCREEN_CENTER, // posição X
+        ((SCALE/2) * y) + 5,             // posição Y
+        &matrix[y][x].simbolo,           // caracteer do pixel
+        matrix[y][x].color               // cor que vai printar
+      );
     }
   }
-  // printTeste(consoleBuffer);
 }
 
 int playerCollided(int x, int y, gamePixel matrix[ROWS][COLUMS]) {
@@ -39,16 +61,16 @@ int playerCollidedSides(car player, gamePixel matrix[ROWS][COLUMS]) {
   }
 }
 
-void drawCar(int x, int y, gamePixel matrix[ROWS][COLUMS], int simbolo, int color) {
+void drawCar(car car, gamePixel matrix[ROWS][COLUMS], int simbolo, int color) {
   gamePixel replacement = { simbolo, color };
 
-  if (y + 2 > 0 && y < ROWS - 2) matrix[y][x] = replacement;
-  if (y + 3 > 0 && y < ROWS - 3) matrix[y + 1][x] = replacement;
-  if (y + 4 > 0 && y < ROWS - 4) matrix[y + 2][x] = replacement;
-  if (y + 3 > 0 && y < ROWS - 3) matrix[y + 1][x -1] = replacement;
-  if (y + 3 > 0 && y < ROWS - 3) matrix[y + 1][x + 1] = replacement;
-  if (y + 5 > 0 && y < ROWS - 5) matrix[y + 3][x + 1] = replacement;
-  if (y + 5 > 0 && y < ROWS - 5) matrix[y + 3][x - 1] = replacement;
+  if (car.y + 2 > 0 && car.y < ROWS - 2) matrix[car.y][car.x] = replacement;
+  if (car.y + 3 > 0 && car.y < ROWS - 3) matrix[car.y + 1][car.x] = replacement;
+  if (car.y + 4 > 0 && car.y < ROWS - 4) matrix[car.y + 2][car.x] = replacement;
+  if (car.y + 3 > 0 && car.y < ROWS - 3) matrix[car.y + 1][car.x -1] = replacement;
+  if (car.y + 3 > 0 && car.y < ROWS - 3) matrix[car.y + 1][car.x + 1] = replacement;
+  if (car.y + 5 > 0 && car.y < ROWS - 5) matrix[car.y + 3][car.x + 1] = replacement;
+  if (car.y + 5 > 0 && car.y < ROWS - 5) matrix[car.y + 3][car.x - 1] = replacement;
 }
 
 void initEnemies(car enemies[ENEMY_NUMBER]){
@@ -66,7 +88,7 @@ void initEnemies(car enemies[ENEMY_NUMBER]){
 void drawEnemies(car enemies[ENEMY_NUMBER], gamePixel matrix[ROWS][COLUMS], int clear) {
   int i;
   for(i = 0; i < ENEMY_NUMBER; i++) {
-    drawCar(enemies[i].x, enemies[i].y, matrix, clear ? PIXEL : PIXEL_SOLID, clear ? COLOR_GRAY : enemies[i].color);
+    drawCar(enemies[i], matrix, clear ? PIXEL : PIXEL_SOLID, clear ? COLOR_GRAY : enemies[i].color);
   }
 }
 
@@ -205,7 +227,6 @@ int gameMenu() {
   HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
   while(1) {
     gotoxy(0,0);
-    
 
     printf("\n\n\n\n\t");
     SetConsoleTextAttribute(out, COLOR_RED);
