@@ -2,6 +2,8 @@
     "files.associations": {
         "carracing.h": "c",
         "display.h": "c",
-        "windows.h": "c"
+        "windows.h": "c",
+        "string.h": "c",
+        "stdio.h": "c"
     }
 }

@@ -80,6 +80,7 @@ int main() {
       drawGameMatrix(gameMatrix);
     }
     if (gameState.gameOver) {
+      Sleep(200);
       saveScore(gameState.player);
       switch(gameOverScreen(gameState.player)) {
         case 1: // Tentar novamente, mantendo o jogador

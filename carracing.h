@@ -12,10 +12,10 @@
 //----OPÇÕES DA TELA
 #define SCREEN_CENTER 38
 #define ROWS 25
-#define COLUMS 13
+#define COLUMS 15
 
 #define LEFT_STREET_SIDE COLUMS + 4
-#define RIGHT_STREET_SIDE COLUMS + 8
+#define RIGHT_STREET_SIDE COLUMS + 10
 
 //----CORES
 #define COLOR_BLACK 0
@@ -66,7 +66,7 @@
 //----GAME-VARS
 #define ENEMY_NUMBER 3
 #define ENEMY_DISTANCE -13
-#define SPEED_NORMAL 8
+#define SPEED_NORMAL 6
 #define SPEED_FAST SPEED_NORMAL / 2
 #define LV2_TRIGGER 800 * 2
 
