@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <string.h>
 #include "display.h"
 
 //----OPÇÕES DO MENU
@@ -65,6 +66,9 @@
 //----GAME-VARS
 #define ENEMY_NUMBER 3
 #define ENEMY_DISTANCE -13
+#define SPEED_NORMAL 8
+#define SPEED_FAST SPEED_NORMAL / 2
+#define LV2_TRIGGER 800 * 2
 
 typedef struct {
     int x;
@@ -80,17 +84,22 @@ typedef struct {
 typedef struct {
     char name[100];
     car car;
-    int hasCollided;
     int score;
 } gamer;
 
 typedef struct {
-  int gameOver;
-  int quit;
-  int currentStage;
-  int currentSpeed;
-  int cycles;
-  gamer player;
+    char playerName[100];
+    int score;
+} highScore;
+
+typedef struct {
+    int gameOver;
+    int quit;
+    int currentStage;
+    int currentSpeed;
+    int cycles;
+    int keyPressed;
+    gamer player;
 } state;
 
 // função de inicialização de estado
@@ -110,15 +119,19 @@ void readHighScoresFile(highScore destination[5]);
 void loadHighScores();
 void sortHighScores(highScore scores[6], int registros);
 
-void initMatrix(gamePixel matrix[ROWS][COLUMS]);
-void drawPista(gamePixel matrix[ROWS][COLUMS]);
-void drawCar(car car, gamePixel matrix[ROWS][COLUMS], int simbolo, int color);
-void initPista(gamePixel matrix[ROWS][COLUMS]);
+// funções de colisão
 int playerCollided(int x, int y, gamePixel matrix[ROWS][COLUMS]);
-void initEnemies(car enemies[ENEMY_NUMBER]);
-void drawEnemies(car enemies[ENEMY_NUMBER], gamePixel matrix[ROWS][COLUMS], int clear);
-int gameOverScreen(gamer player);
-void askPlayerName(gamer *player);
 int playerCollidedSides(car player, gamePixel matrix[ROWS][COLUMS]);
 
-state getInitialGameState();
+// funções de inicialização dos componentes do jogo
+void initMatrix(gamePixel matrix[ROWS][COLUMS]);
+void initPista(gamePixel matrix[ROWS][COLUMS]);
+void initEnemies(car enemies[ENEMY_NUMBER]);
+
+// funções de desenho dos componentes do jogo
+void drawGameMatrix(gamePixel matrix[ROWS][COLUMS]);
+void drawPista(gamePixel matrix[ROWS][COLUMS]);
+void drawCar(car car, gamePixel matrix[ROWS][COLUMS], int simbolo, int color);
+void drawEnemies(car enemies[ENEMY_NUMBER], gamePixel matrix[ROWS][COLUMS], int clear);
+
+void handleKeyPressed(state *gameState, gamePixel matrix[ROWS][COLUMS]);
