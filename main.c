@@ -2,21 +2,23 @@
 
 int main() {
   // altera configurações do console
-  ShowConsoleCursor(false);
-  SetConsoleTitle("CAR RACING - IFPR");
-  system("mode con: cols=101 lines=70");
+  ShowConsoleCursor(false);              // esconde o cursor
+  SetConsoleTitle("CAR RACING - IFPR");  // titulo da janela
+  system("mode con: cols=101 lines=70"); // tamanho da janela
+  system("CHCP 850");                    // pagina de codigo ascii
   system("cls");
 
-  //--estado
-  state gameState = getInitialGameState();
-  //--matrix de pixels
+  // estado do jogo
+  state gameState;
+  setGameState(&gameState, false);
+
+  // matrix de pixels
   gamePixel gameMatrix[ROWS][COLUMS];
-  int keyPressed;
-  int collided = 0;
+
   // menu do jogo
+  gameMenu(&gameState);
 
-  // switch (gameMetyyy
-
+  while(!gameState.quit) {
   // inicialização dos inimigos
   car adversarios[ENEMY_NUMBER];
   initEnemies(adversarios);
@@ -103,15 +105,20 @@ int main() {
         drawCar(gameState.player.car, gameMatrix, PIXEL_SOLID, gameState.player.car.color);
       }
 
-      // collided = playerCollided(playerCar.x, playerCar.y, gameMatrix) || playerCollidedSides(playerCar, gameMatrix);
-      // if (collided) {
-      //   gameOver = true;
-      // }
-      printGameMatrix(gameMatrix);
+      gameState.gameOver = playerCollided(gameState.player.car.x, gameState.player.car.y, gameMatrix) || playerCollidedSides(gameState.player.car, gameMatrix);
+      drawGameMatrix(gameMatrix);
     }
     if (gameState.gameOver) {
-      system("pause");
-      gameOverScreen(gameState.player);
+      saveScore(gameState.player);
+      switch(gameOverScreen(gameState.player)) {
+        case 1: // Tentar novamente, mantendo o jogador
+          setGameState(&gameState, true);
+          break;
+        case 2: // Retorna ao menu e reinicia o estado
+          setGameState(&gameState, false);
+          gameMenu(&gameState);
+          break;
+      }
     }
   }
 

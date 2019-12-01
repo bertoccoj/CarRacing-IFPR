@@ -93,8 +93,23 @@ typedef struct {
   gamer player;
 } state;
 
-int gameMenu();
-void printGameMatrix(gamePixel matrix[ROWS][COLUMS]);
+// função de inicialização de estado
+void setGameState(state *gameState, int keepPlayer);
+
+// Funções dos menus/telas do jogo
+void gameMenu(state *gameState);
+void highScoresScreen();
+void askPlayerInfo(gamer *player);
+int gameMenuOptions();
+int gameOverScreen(gamer player);
+
+// funções do highScore
+int getHighScoreCount();
+void saveScore(gamer jogador);
+void readHighScoresFile(highScore destination[5]);
+void loadHighScores();
+void sortHighScores(highScore scores[6], int registros);
+
 void initMatrix(gamePixel matrix[ROWS][COLUMS]);
 void drawPista(gamePixel matrix[ROWS][COLUMS]);
 void drawCar(car car, gamePixel matrix[ROWS][COLUMS], int simbolo, int color);
