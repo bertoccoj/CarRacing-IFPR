@@ -63,8 +63,8 @@ void drawGameMatrix(gamePixel matrix[ROWS][COLUMS]) {
   }
 }
 
-int playerCollided(int x, int y, gamePixel matrix[ROWS][COLUMS]) {
-  return matrix[y - 1][x].simbolo != PIXEL;
+int playerCollided(car playerCar, gamePixel matrix[ROWS][COLUMS]) {
+  return matrix[playerCar.y - 1][playerCar.x].simbolo != PIXEL;
 }
 
 int playerCollidedSides(car player, gamePixel matrix[ROWS][COLUMS]) {
@@ -105,8 +105,8 @@ void drawEnemies(car enemies[ENEMY_NUMBER], gamePixel matrix[ROWS][COLUMS], int 
   }
 }
 
-void initPista(gamePixel matrix[ROWS][COLUMS]) {
-  gamePixel bordaOut = { PIXEL, COLOR_GREEN };
+void initPista(gamePixel matrix[ROWS][COLUMS], int color) {
+  gamePixel bordaOut = { PIXEL, color };
   int i, j;
 
   for (i = 0; i < ROWS; i++) {
@@ -182,5 +182,15 @@ void handleKeyPressed(state *gameState, gamePixel matrix[ROWS][COLUMS]) {
         gameState->currentSpeed = gameState->currentSpeed == SPEED_FAST ? SPEED_NORMAL : SPEED_FAST;
       }
       break;
+  }
+}
+
+void updateHighScore(car enemies[ENEMY_NUMBER], int *score) {
+  int enemy;
+  for (enemy = 0; enemy < ENEMY_NUMBER; enemy++) {
+    enemies[enemy].y++;
+    if (enemies[enemy].y == ROWS - 1) {
+      *score += 50;
+    }
   }
 }

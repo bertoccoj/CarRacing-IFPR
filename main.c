@@ -4,7 +4,7 @@ int main() {
   // altera configurações do console
   ShowConsoleCursor(false);              // esconde o cursor
   SetConsoleTitle("CAR RACING - IFPR");  // titulo da janela
-  system("mode con: cols=101 lines=70"); // tamanho da janela
+  system("mode con: cols=100 lines=70"); // tamanho da janela
   system("CHCP 850");                    // pagina de codigo ascii
   system("cls");
 
@@ -29,7 +29,7 @@ int main() {
     initMatrix(gameMatrix);
     drawCar(gameState.player.car, gameMatrix, PIXEL_SOLID, gameState.player.car.color);
     drawEnemies(adversarios, gameMatrix, false);
-    initPista(gameMatrix);
+    initPista(gameMatrix, COLOR_GREEN);
     drawPista(gameMatrix);
     while (!gameState.gameOver) {
       gotoxy(0,0);
@@ -55,17 +55,10 @@ int main() {
 
         int enemy;
         drawEnemies(adversarios, gameMatrix, true);
-        for (enemy = 0; enemy < ENEMY_NUMBER; enemy++) {
-          adversarios[enemy].y++;
-        }
+        updateHighScore(adversarios, &gameState.player.score);
         drawEnemies(adversarios, gameMatrix, false);
 
         // verifica se cada inimigo desapareceu da tela
-        for (enemy = 0; enemy < ENEMY_NUMBER; enemy++) {
-          if (adversarios[enemy].y == ROWS - 1) {
-            gameState.player.score += 50;
-          }
-        }
         // reinicializa inimigos quando todos desapareceram da tela
         if (adversarios[ENEMY_NUMBER - 1].y >= ROWS - 1) {
           initEnemies(adversarios);
@@ -77,11 +70,14 @@ int main() {
       if (kbhit()) handleKeyPressed(&gameState, gameMatrix);
       drawCar(gameState.player.car, gameMatrix, PIXEL_SOLID, gameState.player.car.color);
 
-      gameState.gameOver = playerCollided(gameState.player.car.x, gameState.player.car.y, gameMatrix) || playerCollidedSides(gameState.player.car, gameMatrix);
+      if (playerCollided(gameState.player.car, gameMatrix) || playerCollidedSides(gameState.player.car, gameMatrix)) {
+        initPista(gameMatrix, COLOR_RED);
+        gameState.gameOver = true;
+      }
       drawGameMatrix(gameMatrix);
     }
     if (gameState.gameOver) {
-      Sleep(200);
+      Sleep(500);
       saveScore(gameState.player);
       switch(gameOverScreen(gameState.player)) {
         case 1: // Tentar novamente, mantendo o jogador

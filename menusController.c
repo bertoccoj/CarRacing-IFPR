@@ -1,4 +1,29 @@
 #include "carracing.h"
+void drawLine(char symbol, int color) {
+  int i;
+  printf("\n\t");
+  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+  for (i = 0; i < (MENU_LINE_LENGTH / 2) - 50; i++) {
+  // for (i = 0; i < (MENU_LINE_LENGTH / 2) - 50; i++) {
+    printf(" ");
+  }
+  for (i = 0; i < MENU_LINE_LENGTH; i++) {
+    printf("%c", symbol);
+  }
+}
+
+void printTextCenter(char *text, int lineBreak, int color) {
+  int i;
+  for (i = 0; i < lineBreak; i++) {
+    printf("\n");
+  }
+  for (i = 0; i < 50 - (strlen(text) / 2); i++) {
+    printf(" ");
+  }
+  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+  printf(text);
+  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 1);
+}
 
 // função que mostra o menu e controla a ação a ser tomada baseado na opção selecionada
 void gameMenu(state *gameState) {
@@ -19,14 +44,14 @@ void askPlayerInfo(gamer *player) {
   HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
   system("cls");
   printf("%s", player);
-  SetConsoleTextAttribute(out, COLOR_WHITE);
-  printf("\n\n\n\n\n\t\t\t\t     DIGITE SEU NOME: ");
-  
-  SetConsoleTextAttribute(out, COLOR_GREEN);
-  scanf("%[a-z A-Z]%*c", player->name);
+  printTextCenter("DIGITE SEU NOME: ", 5, COLOR_WHITE);
 
-  SetConsoleTextAttribute(out, COLOR_WHITE);
-  printf("\n\n\n\n\n\t\t\t\t   ESCOLHA A COR DO SEU CARRO:\n");
+  SetConsoleTextAttribute(out, COLOR_GREEN);
+  scanf("%[a-z A-Z]%*c", player->name); 
+  
+  system("cls");
+  printTextCenter(player->name, 3, COLOR_GREEN);
+  printTextCenter("ESCOLHA A COR DO SEU CARRO:\n", 5, COLOR_WHITE);
   int x, y, selectedColor = 1;
   int h = 17, w = 16;
 
@@ -106,6 +131,7 @@ void highScoresScreen() {
     int i;
     
     for(i = 0; i < registros; i++) {
+      gotoxy(i,i);
       printf("\n%d -name: %s, score: %d\n\n", i + 1, scores[i].playerName, scores[i].score);
     }
   }
@@ -117,26 +143,17 @@ int gameOverScreen(gamer player) {
   HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
   int selectedOption = 1;
   int i;
-  int lineWidth = 85;
-
   system("cls");
   while(true) {
     gotoxy(0,0);
 
-    printf("\n\n\n\n\t");
-    SetConsoleTextAttribute(out, COLOR_RED);
-    for (i = 0; i < lineWidth; i++) {
-      printf("\xDB");
-    }
-    SetConsoleTextAttribute(out, COLOR_RED);
-    printf("\n\n\t\t\t\t\t\tGAME OVER\n");
+    printTextCenter("",5,1);
+    drawLine('\xDB', COLOR_RED);
+    printTextCenter("GAME OVER", 2, COLOR_RED);
     SetConsoleTextAttribute(out, COLOR_GREEN);
     printf("\n\t\t\t\t\t%s -- %d pontos\n", player.name, player.score);
     printf("\t");
-    SetConsoleTextAttribute(out, COLOR_RED);
-    for (i = 0; i < lineWidth; i++) {
-      printf("_");
-    }
+    drawLine('_', COLOR_RED);
     SetConsoleTextAttribute(out, COLOR_GREEN);
     printf("\n\n\t\t\t\t        Deseja tentar novamente?\n");
     SetConsoleTextAttribute(out, selectedOption == 1 ? BACKGROUND_RED : 1);
@@ -146,7 +163,7 @@ int gameOverScreen(gamer player) {
 
     printf("\n\t");
     SetConsoleTextAttribute(out, COLOR_RED);
-    for (i = 0; i < lineWidth; i++) {
+    for (i = 0; i < MENU_LINE_LENGTH; i++) {
       printf("_");
     }
     if (kbhit()) { 
@@ -166,49 +183,28 @@ int gameOverScreen(gamer player) {
           return selectedOption;
       }
     }
-    SetConsoleTextAttribute(out, FOREGROUND_GREEN);
-    printf("\n\n\t");
-    SetConsoleTextAttribute(out, FOREGROUND_RED);
-    for (i = 0; i < lineWidth; i++) {
-      printf("\xDB");
-    }
+    drawLine('\xDB',  FOREGROUND_RED);
   }
 }
 
 int gameMenuOptions() {
   int selectedOption = 1;
   int i;
-  int lineWidth = 85;
   HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
   while(1) {
     gotoxy(0,0);
+    printTextCenter("",5,1);
+    SetConsoleTextAttribute(out, COLOR_RED);
+    drawLine('\xDB', COLOR_RED);
+    printTextCenter("Car Racing\n",1,COLOR_BLUE);
+    drawLine('_', COLOR_RED);
 
-    printf("\n\n\n\n\t");
-    SetConsoleTextAttribute(out, COLOR_RED);
-    for (i = 0; i < lineWidth; i++) {
-      printf("\xDB");
-    }
-    SetConsoleTextAttribute(out, COLOR_BLUE);
-    printf("\n\t\t\t\t\t     Car Racing\n");
-    printf("\t");
-    SetConsoleTextAttribute(out, COLOR_RED);
-    for (i = 0; i < lineWidth; i++) {
-      printf("_");
-    }
-    SetConsoleTextAttribute(out, COLOR_GREEN);
-    printf("\n\n\t\t\t\t        Selecione uma opcao\n");
-    SetConsoleTextAttribute(out, selectedOption == 1 ? BACKGROUND_RED : 1);
-    printf("\n\t\t\t\t\t 1 - Novo Jogo    ");
-    SetConsoleTextAttribute(out, selectedOption == 2 ? BACKGROUND_RED : 1);
-    printf("\n\t\t\t\t\t 2 - High Scores  ");
-    SetConsoleTextAttribute(out, selectedOption == 3 ? BACKGROUND_RED : 1);
-    printf("\n\t\t\t\t\t 3 - Sair         \n");
+    printTextCenter("Selecione uma opcao\n",1, COLOR_BLUE);
+    printTextCenter("  Novo Jogo  \n", 0, selectedOption == 1 ? BACKGROUND_RED : COLOR_WHITE);
+    printTextCenter("  High Scores  \n", 0, selectedOption == 2 ? BACKGROUND_RED : COLOR_WHITE);
+    printTextCenter("  sair  \n", 0, selectedOption == 3 ? BACKGROUND_RED : COLOR_WHITE);
 
-    printf("\n\t");
-    SetConsoleTextAttribute(out, COLOR_RED);
-    for (i = 0; i < lineWidth; i++) {
-      printf("_");
-    }
+    drawLine('_', COLOR_RED);
     if (kbhit()) { 
       switch (getch()) {
         case KEY_W:
@@ -228,11 +224,7 @@ int gameMenuOptions() {
           return selectedOption;
       }
     }
-    SetConsoleTextAttribute(out, FOREGROUND_GREEN);
-    printf("\n\n\t");
-    SetConsoleTextAttribute(out, FOREGROUND_RED);
-    for (i = 0; i < lineWidth; i++) {
-      printf("\xDB");
-    }
+    drawLine('_', COLOR_WHITE);
+    drawLine('\xDB', FOREGROUND_RED);
   }
 }

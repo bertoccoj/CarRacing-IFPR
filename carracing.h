@@ -13,6 +13,7 @@
 #define SCREEN_CENTER 38
 #define ROWS 25
 #define COLUMS 15
+#define MENU_LINE_LENGTH 85
 
 #define LEFT_STREET_SIDE COLUMS + 4
 #define RIGHT_STREET_SIDE COLUMS + 10
@@ -66,7 +67,7 @@
 //----GAME-VARS
 #define ENEMY_NUMBER 3
 #define ENEMY_DISTANCE -13
-#define SPEED_NORMAL 6
+#define SPEED_NORMAL 2
 #define SPEED_FAST SPEED_NORMAL / 2
 #define LV2_TRIGGER 800 * 2
 
@@ -111,6 +112,7 @@ void highScoresScreen();
 void askPlayerInfo(gamer *player);
 int gameMenuOptions();
 int gameOverScreen(gamer player);
+void drawLine(char symbol, int color);
 
 // funções do highScore
 int getHighScoreCount();
@@ -118,14 +120,15 @@ void saveScore(gamer jogador);
 void readHighScoresFile(highScore destination[5]);
 void loadHighScores();
 void sortHighScores(highScore scores[6], int registros);
+void updateHighScore(car enemies[ENEMY_NUMBER], int *score);
 
 // funções de colisão
-int playerCollided(int x, int y, gamePixel matrix[ROWS][COLUMS]);
+int playerCollided(car playerCar, gamePixel matrix[ROWS][COLUMS]);
 int playerCollidedSides(car player, gamePixel matrix[ROWS][COLUMS]);
 
 // funções de inicialização dos componentes do jogo
 void initMatrix(gamePixel matrix[ROWS][COLUMS]);
-void initPista(gamePixel matrix[ROWS][COLUMS]);
+void initPista(gamePixel matrix[ROWS][COLUMS], int color);
 void initEnemies(car enemies[ENEMY_NUMBER]);
 
 // funções de desenho dos componentes do jogo
@@ -137,3 +140,4 @@ void drawEnemies(car enemies[ENEMY_NUMBER], gamePixel matrix[ROWS][COLUMS], int 
 void handleKeyPressed(state *gameState, gamePixel matrix[ROWS][COLUMS]);
 
 void drawBorder();
+void printTextCenter(char *text, int lineBreak, int color);
