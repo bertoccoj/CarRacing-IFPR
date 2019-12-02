@@ -33,6 +33,22 @@ void initMatrix(gamePixel matrix[ROWS][COLUMS]) {
   }
 }
 
+void drawBorder() {
+  int x,y;
+  int simbolo = PIXEL2;
+  for (y = -1; y < ROWS + 1; y++) {
+    for (x = -1; x < COLUMS + 1; x++) {
+      printChar(
+        ((SCALE/2) * x) + SCREEN_CENTER, // posição X
+        ((SCALE/2) * y) + 5,             // posição Y
+        &simbolo,           // caracteer do pixel
+        COLOR_WHITE               // cor que vai printar
+      ); 
+    }
+  }
+
+}
+
 void drawGameMatrix(gamePixel matrix[ROWS][COLUMS]) {
   int y, x;
   for (y = 0; y < ROWS; y++) {

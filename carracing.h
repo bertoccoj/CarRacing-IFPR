@@ -135,3 +135,5 @@ void drawCar(car car, gamePixel matrix[ROWS][COLUMS], int simbolo, int color);
 void drawEnemies(car enemies[ENEMY_NUMBER], gamePixel matrix[ROWS][COLUMS], int clear);
 
 void handleKeyPressed(state *gameState, gamePixel matrix[ROWS][COLUMS]);
+
+void drawBorder();

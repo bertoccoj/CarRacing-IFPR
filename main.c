@@ -25,6 +25,7 @@ int main() {
 
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_WHITE);
     system("cls");
+    drawBorder();
     initMatrix(gameMatrix);
     drawCar(gameState.player.car, gameMatrix, PIXEL_SOLID, gameState.player.car.color);
     drawEnemies(adversarios, gameMatrix, false);
