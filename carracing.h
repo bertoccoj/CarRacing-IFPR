@@ -108,7 +108,7 @@ void setGameState(state *gameState, int keepPlayer);
 
 // Funções dos menus/telas do jogo
 void gameMenu(state *gameState);
-void highScoresScreen();
+void highScoresScreen(int isGameOverScreen);
 void askPlayerInfo(gamer *player);
 int gameMenuOptions();
 int gameOverScreen(gamer player);
@@ -140,4 +140,4 @@ void drawEnemies(car enemies[ENEMY_NUMBER], gamePixel matrix[ROWS][COLUMS], int 
 void handleKeyPressed(state *gameState, gamePixel matrix[ROWS][COLUMS]);
 
 void drawBorder();
-void printTextCenter(char *text, int lineBreak, int color);
+void printTextCenter(char *text, int lineBreakbefore, int color);

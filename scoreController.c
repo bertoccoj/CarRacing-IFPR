@@ -1,7 +1,6 @@
 #include "carracing.h"
 
-// retorna a quantidade de registros
-// ordena os registros na matrix recebida como parametro
+// lê o arquivo de high scores e grava no array recebido como parametro
 void readHighScoresFile(highScore destination[5]) {
     int i;
     FILE *arquivo = fopen("highscores.bin", "rb");

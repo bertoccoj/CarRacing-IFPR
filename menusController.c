@@ -4,7 +4,6 @@ void drawLine(char symbol, int color) {
   printf("\n\t");
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
   for (i = 0; i < (MENU_LINE_LENGTH / 2) - 50; i++) {
-  // for (i = 0; i < (MENU_LINE_LENGTH / 2) - 50; i++) {
     printf(" ");
   }
   for (i = 0; i < MENU_LINE_LENGTH; i++) {
@@ -12,14 +11,15 @@ void drawLine(char symbol, int color) {
   }
 }
 
-void printTextCenter(char *text, int lineBreak, int color) {
+void printTextCenter(char *text, int lineBreakbefore, int color){
   int i;
-  for (i = 0; i < lineBreak; i++) {
+  for (i = 0; i < lineBreakbefore; i++) {
     printf("\n");
   }
   for (i = 0; i < 50 - (strlen(text) / 2); i++) {
     printf(" ");
   }
+  
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
   printf(text);
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 1);
@@ -33,10 +33,139 @@ void gameMenu(state *gameState) {
       askPlayerInfo(&gameState->player);
       break;
     case MENU_HIGH_SCORES:
-      highScoresScreen(); 
+      highScoresScreen(false); 
       gameMenu(gameState);
       break;
     case MENU_QUIT: exit(false);
+  }
+}
+
+void highScoresScreen(int isGameOverScreen) {
+  if (!isGameOverScreen) {
+    system("cls");
+  }
+  highScore scores[5];
+  int registros = getHighScoreCount();
+
+  if (registros == 0) {
+    drawLine(PIXEL, COLOR_LIGHT_BLUE);
+    printf("AINDA NÃO EXISTE NENHUM HIGH STORE REGISTRADO!!");
+    drawLine(PIXEL, COLOR_LIGHT_BLUE);
+  } else {
+    int i, height = isGameOverScreen ? 25 : 13;
+    readHighScoresFile(scores);
+    gotoxy(0, isGameOverScreen ? 18 : 7);
+    printTextCenter("HIGH SCORES\n", 2, COLOR_WHITE);
+    drawLine(PIXEL, COLOR_LIGHT_BLUE);
+    int colors[5] = { COLOR_LIGHT_YELLOW, COLOR_YELLOW, COLOR_GREEN, COLOR_BLUE, COLOR_PURPLE };
+    for(i = 0; i < registros; i++) {
+      gotoxy(SCREEN_CENTER - 10, (i * 3) + height);
+      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_LIGHT_BLUE);
+      printf("%d NOME:", i);
+      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colors[i]);
+      printf(" %s ", scores[i].playerName);
+      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 1);
+      gotoxy(SCREEN_CENTER + 20, (i * 3) + height);
+      printf("---");
+      gotoxy(SCREEN_CENTER + 30, (i * 3) + height);
+      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colors[i]);
+      printf(" %d\n\n", scores[i].score);
+    }
+    drawLine(PIXEL, COLOR_LIGHT_BLUE);
+  }
+  if (!isGameOverScreen) {
+    printTextCenter("                 ", 2, BACKGROUND_RED);
+    printTextCenter("    <- voltar    ", 1, BACKGROUND_RED);
+    printTextCenter("                 ", 1, BACKGROUND_RED);
+    getch();
+  }
+  
+}
+
+int gameOverScreen(gamer player) {
+  HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+  int selectedOption = 1;
+  int i;
+  char text[100];
+  sprintf(text, "%s -- %d pontos", player.name, player.score);
+
+  system("cls");
+  while(true) {
+    gotoxy(0,0);
+
+    printf("\n\n\n\n\n");
+    drawLine('\xDB', COLOR_RED);
+    printTextCenter("GAME OVER", 2, COLOR_RED);
+
+    printTextCenter(text, 2, COLOR_GREEN);
+    drawLine('_', COLOR_RED);
+    printTextCenter("Deseja tentar novamente?", 2, COLOR_GREEN);
+    printTextCenter("    SIM    ", 2, selectedOption == 1 ? BACKGROUND_RED : 1);
+    printTextCenter("    NAO    ", 2, selectedOption == 2 ? BACKGROUND_RED : 1);
+
+    drawLine('_', COLOR_RED);
+
+    highScoresScreen(true);
+    if (kbhit()) { 
+      switch (getch()) {
+        case KEY_UP:
+          if (selectedOption > 1) {
+            selectedOption--;
+          }
+          break;
+        case KEY_DOWN:
+          if (selectedOption < 2) {
+            selectedOption++;
+          }
+          break;
+        case KEY_SPACE_BAR:
+        case KEY_RETURN:
+          return selectedOption;
+      }
+    }
+    drawLine('\xDB',  FOREGROUND_RED);
+  }
+}
+
+int gameMenuOptions() {
+  int selectedOption = 1;
+  int i;
+  HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+  while(1) {
+
+    gotoxy(0,0);
+    printf("\n\n\n\n\n");
+    drawLine('\xDB', COLOR_RED);
+    printTextCenter("Car Racing", 1, COLOR_BLUE);
+    drawLine('_', COLOR_RED);
+
+    printTextCenter("Selecione uma opcao", 1, COLOR_BLUE);
+    printTextCenter("  Novo Jogo  ", 1, selectedOption == 1 ? BACKGROUND_RED : COLOR_WHITE);
+    printTextCenter("  High Scores  ", 1, selectedOption == 2 ? BACKGROUND_RED : COLOR_WHITE);
+    printTextCenter("  sair  ", 1, selectedOption == 3 ? BACKGROUND_RED : COLOR_WHITE);
+
+    drawLine('_', COLOR_RED);
+    if (kbhit()) { 
+      switch (getch()) {
+        case KEY_W:
+        case KEY_SMALL_W:
+        case KEY_UP:
+          if (selectedOption > 1) {
+            selectedOption--;
+          }
+          break;
+        case KEY_S:
+        case KEY_DOWN:
+          if (selectedOption < 3) {
+            selectedOption++; 
+          }
+          break;
+        case KEY_RETURN:
+          return selectedOption;
+      }
+    }
+    drawLine('_', COLOR_WHITE);
+    drawLine('\xDB', FOREGROUND_RED);
   }
 }
 
@@ -119,112 +248,3 @@ void askPlayerInfo(gamer *player) {
   }
 }
 
-void highScoresScreen() {
-  system("cls");
-  highScore scores[5];
-  int registros = getHighScoreCount();
-
-  if (registros == 0) {
-    printf("não há high scores registrados");
-  } else {
-    readHighScoresFile(scores);
-    int i;
-    
-    for(i = 0; i < registros; i++) {
-      gotoxy(i,i);
-      printf("\n%d -name: %s, score: %d\n\n", i + 1, scores[i].playerName, scores[i].score);
-    }
-  }
-  system("pause");
-
-}
-
-int gameOverScreen(gamer player) {
-  HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
-  int selectedOption = 1;
-  int i;
-  system("cls");
-  while(true) {
-    gotoxy(0,0);
-
-    printTextCenter("",5,1);
-    drawLine('\xDB', COLOR_RED);
-    printTextCenter("GAME OVER", 2, COLOR_RED);
-    SetConsoleTextAttribute(out, COLOR_GREEN);
-    printf("\n\t\t\t\t\t%s -- %d pontos\n", player.name, player.score);
-    printf("\t");
-    drawLine('_', COLOR_RED);
-    SetConsoleTextAttribute(out, COLOR_GREEN);
-    printf("\n\n\t\t\t\t        Deseja tentar novamente?\n");
-    SetConsoleTextAttribute(out, selectedOption == 1 ? BACKGROUND_RED : 1);
-    printf("\n\t\t\t\t\t\t    SIM    ");
-    SetConsoleTextAttribute(out, selectedOption == 2 ? BACKGROUND_RED : 1);
-    printf("\n\t\t\t\t\t\t    NAO    ");
-
-    printf("\n\t");
-    SetConsoleTextAttribute(out, COLOR_RED);
-    for (i = 0; i < MENU_LINE_LENGTH; i++) {
-      printf("_");
-    }
-    if (kbhit()) { 
-      switch (getch()) {
-        case KEY_UP:
-          if (selectedOption > 1) {
-            selectedOption--;
-          }
-          break;
-        case KEY_DOWN:
-          if (selectedOption < 2) {
-            selectedOption++;
-          }
-          break;
-        case KEY_SPACE_BAR:
-        case KEY_RETURN:
-          return selectedOption;
-      }
-    }
-    drawLine('\xDB',  FOREGROUND_RED);
-  }
-}
-
-int gameMenuOptions() {
-  int selectedOption = 1;
-  int i;
-  HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
-  while(1) {
-    gotoxy(0,0);
-    printTextCenter("",5,1);
-    SetConsoleTextAttribute(out, COLOR_RED);
-    drawLine('\xDB', COLOR_RED);
-    printTextCenter("Car Racing\n",1,COLOR_BLUE);
-    drawLine('_', COLOR_RED);
-
-    printTextCenter("Selecione uma opcao\n",1, COLOR_BLUE);
-    printTextCenter("  Novo Jogo  \n", 0, selectedOption == 1 ? BACKGROUND_RED : COLOR_WHITE);
-    printTextCenter("  High Scores  \n", 0, selectedOption == 2 ? BACKGROUND_RED : COLOR_WHITE);
-    printTextCenter("  sair  \n", 0, selectedOption == 3 ? BACKGROUND_RED : COLOR_WHITE);
-
-    drawLine('_', COLOR_RED);
-    if (kbhit()) { 
-      switch (getch()) {
-        case KEY_W:
-        case KEY_SMALL_W:
-        case KEY_UP:
-          if (selectedOption > 1) {
-            selectedOption--;
-          }
-          break;
-        case KEY_S:
-        case KEY_DOWN:
-          if (selectedOption < 3) {
-            selectedOption++; 
-          }
-          break;
-        case KEY_RETURN:
-          return selectedOption;
-      }
-    }
-    drawLine('_', COLOR_WHITE);
-    drawLine('\xDB', FOREGROUND_RED);
-  }
-}
