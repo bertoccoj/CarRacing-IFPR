@@ -33,17 +33,27 @@ void initMatrix(gamePixel matrix[ROWS][COLUMS]) {
   }
 }
 
-void drawBorder() {
+void drawBorder(int color) {
   int x,y;
-  int simbolo = PIXEL2;
+  int simbolo = PIXEL3;
   for (y = -1; y < ROWS + 1; y++) {
     for (x = -1; x < COLUMS + 1; x++) {
-      printChar(
-        ((SCALE/2) * x) + SCREEN_CENTER, // posição X
-        ((SCALE/2) * y) + 5,             // posição Y
-        &simbolo,           // caracteer do pixel
-        COLOR_WHITE               // cor que vai printar
-      ); 
+      if (y == -1 || x == COLUMS || y == ROWS || x == -1) {
+        printChar(
+          ((SCALE/2) * x) + SCREEN_CENTER, // posição X
+          ((SCALE/2) * y) + 5,             // posição Y
+          &simbolo,                        // caracteer do pixel
+          color                            // cor que vai printar
+        ); 
+      } else {
+        printChar(
+          ((SCALE/2) * x) + SCREEN_CENTER, // posição X
+          ((SCALE/2) * y) + 5,             // posição Y
+          &simbolo,                        // caracteer do pixel
+          COLOR_BLACK                      // cor que vai printar
+        ); 
+      }
+      
     }
   }
 
@@ -193,4 +203,32 @@ void updateHighScore(car enemies[ENEMY_NUMBER], int *score) {
       *score += 50;
     }
   }
+}
+
+void printScore(gamer player) {
+  gotoxy(SCREEN_CENTER + COLUMS * 2 + 7, 8);
+  int i;
+  for (i = 0; i < strlen(player.name) + 6 * 2; i++) {
+    printf("%c", PIXEL);
+  }
+  for (i = 0; i < 7; i++) {
+    gotoxy(SCREEN_CENTER + COLUMS * 2 + 7, 8 + i);
+    printf("%c", PIXEL);
+  }
+  
+  for (i = 0; i < 7; i++) {
+    gotoxy(SCREEN_CENTER + COLUMS * 2 + 7 + strlen(player.name) + 6 * 2, 8 + i);
+    printf("%c", PIXEL);
+  }
+
+  gotoxy(SCREEN_CENTER + COLUMS * 2 + 10, 10);
+  printf("NOME: %s", player.name);
+  gotoxy(SCREEN_CENTER + COLUMS * 2 + 10, 12);
+  printf("SCORE: %d", player.score);
+
+  gotoxy(SCREEN_CENTER + COLUMS * 2 + 7, 14);
+  for (i = 0; i < strlen(player.name) + 6 * 2; i++) {
+    printf("%c", PIXEL);
+  }
+
 }

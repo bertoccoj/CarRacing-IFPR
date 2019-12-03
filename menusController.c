@@ -1,12 +1,12 @@
 #include "carracing.h"
-void drawLine(char symbol, int color) {
+void drawLine(char symbol, int color, int size) {
   int i;
   printf("\n\t");
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-  for (i = 0; i < (MENU_LINE_LENGTH / 2) - 50; i++) {
+  for (i = 0; i < (size / 2) - 50; i++) {
     printf(" ");
   }
-  for (i = 0; i < MENU_LINE_LENGTH; i++) {
+  for (i = 0; i < size; i++) {
     printf("%c", symbol);
   }
 }
@@ -48,20 +48,20 @@ void highScoresScreen(int isGameOverScreen) {
   int registros = getHighScoreCount();
 
   if (registros == 0) {
-    drawLine(PIXEL, COLOR_LIGHT_BLUE);
-    printf("AINDA NÃO EXISTE NENHUM HIGH STORE REGISTRADO!!");
-    drawLine(PIXEL, COLOR_LIGHT_BLUE);
+    drawLine(PIXEL, COLOR_LIGHT_BLUE, MENU_LINE_LENGTH);
+    printTextCenter("AINDA NAO EXISTE NENHUM HIGH STORE REGISTRADO!!", 1, COLOR_LIGHT_PURPLE);
+    drawLine(PIXEL, COLOR_LIGHT_BLUE, MENU_LINE_LENGTH);
   } else {
     int i, height = isGameOverScreen ? 25 : 13;
     readHighScoresFile(scores);
     gotoxy(0, isGameOverScreen ? 18 : 7);
     printTextCenter("HIGH SCORES\n", 2, COLOR_WHITE);
-    drawLine(PIXEL, COLOR_LIGHT_BLUE);
+    drawLine(PIXEL, COLOR_LIGHT_BLUE, MENU_LINE_LENGTH);
     int colors[5] = { COLOR_LIGHT_YELLOW, COLOR_YELLOW, COLOR_GREEN, COLOR_BLUE, COLOR_PURPLE };
     for(i = 0; i < registros; i++) {
       gotoxy(SCREEN_CENTER - 10, (i * 3) + height);
       SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_LIGHT_BLUE);
-      printf("%d NOME:", i);
+      printf("%d NOME:", i + 1);
       SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colors[i]);
       printf(" %s ", scores[i].playerName);
       SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 1);
@@ -71,7 +71,7 @@ void highScoresScreen(int isGameOverScreen) {
       SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colors[i]);
       printf(" %d\n\n", scores[i].score);
     }
-    drawLine(PIXEL, COLOR_LIGHT_BLUE);
+    drawLine(PIXEL, COLOR_LIGHT_BLUE, MENU_LINE_LENGTH);
   }
   if (!isGameOverScreen) {
     printTextCenter("                 ", 2, BACKGROUND_RED);
@@ -94,16 +94,16 @@ int gameOverScreen(gamer player) {
     gotoxy(0,0);
 
     printf("\n\n\n\n\n");
-    drawLine('\xDB', COLOR_RED);
+    drawLine('\xDB', COLOR_RED, MENU_LINE_LENGTH);
     printTextCenter("GAME OVER", 2, COLOR_RED);
 
     printTextCenter(text, 2, COLOR_GREEN);
-    drawLine('_', COLOR_RED);
+    drawLine('_', COLOR_RED, MENU_LINE_LENGTH);
     printTextCenter("Deseja tentar novamente?", 2, COLOR_GREEN);
     printTextCenter("    SIM    ", 2, selectedOption == 1 ? BACKGROUND_RED : 1);
     printTextCenter("    NAO    ", 2, selectedOption == 2 ? BACKGROUND_RED : 1);
 
-    drawLine('_', COLOR_RED);
+    drawLine('_', COLOR_RED, MENU_LINE_LENGTH);
 
     highScoresScreen(true);
     if (kbhit()) { 
@@ -123,7 +123,7 @@ int gameOverScreen(gamer player) {
           return selectedOption;
       }
     }
-    drawLine('\xDB',  FOREGROUND_RED);
+    drawLine('\xDB',  FOREGROUND_RED, MENU_LINE_LENGTH);
   }
 }
 
@@ -135,26 +135,23 @@ int gameMenuOptions() {
 
     gotoxy(0,0);
     printf("\n\n\n\n\n");
-    drawLine('\xDB', COLOR_RED);
-    printTextCenter("Car Racing", 1, COLOR_BLUE);
-    drawLine('_', COLOR_RED);
+    drawLine('\xDB', COLOR_RED, MENU_LINE_LENGTH);
+    printTextCenter("Car Racing", 1, COLOR_LIGHT_AQUA);
+    drawLine('_', COLOR_RED, MENU_LINE_LENGTH);
 
-    printTextCenter("Selecione uma opcao", 1, COLOR_BLUE);
-    printTextCenter("  Novo Jogo  ", 1, selectedOption == 1 ? BACKGROUND_RED : COLOR_WHITE);
+    printTextCenter("Selecione uma opcao", 1, COLOR_LIGHT_AQUA);
+    printTextCenter("  Novo Jogo  ", 3, selectedOption == 1 ? BACKGROUND_RED : COLOR_WHITE);
     printTextCenter("  High Scores  ", 1, selectedOption == 2 ? BACKGROUND_RED : COLOR_WHITE);
     printTextCenter("  sair  ", 1, selectedOption == 3 ? BACKGROUND_RED : COLOR_WHITE);
 
-    drawLine('_', COLOR_RED);
+    drawLine('_', COLOR_RED, MENU_LINE_LENGTH);
     if (kbhit()) { 
       switch (getch()) {
-        case KEY_W:
-        case KEY_SMALL_W:
         case KEY_UP:
           if (selectedOption > 1) {
             selectedOption--;
           }
           break;
-        case KEY_S:
         case KEY_DOWN:
           if (selectedOption < 3) {
             selectedOption++; 
@@ -164,19 +161,35 @@ int gameMenuOptions() {
           return selectedOption;
       }
     }
-    drawLine('_', COLOR_WHITE);
-    drawLine('\xDB', FOREGROUND_RED);
+    drawLine('_', COLOR_WHITE, MENU_LINE_LENGTH);
+    drawLine('\xDB', FOREGROUND_RED, MENU_LINE_LENGTH);
   }
 }
 
 void askPlayerInfo(gamer *player) {
   HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
-  system("cls");
-  printf("%s", player);
-  printTextCenter("DIGITE SEU NOME: ", 5, COLOR_WHITE);
+  int isNameValid = false, i;
 
-  SetConsoleTextAttribute(out, COLOR_GREEN);
-  scanf("%[a-z A-Z]%*c", player->name); 
+  do {
+    system("cls");
+    printTextCenter("Escolha Seu nome", 2, COLOR_WHITE);
+    printTextCenter("Deve possuir: min 3 - max 10(caracteres)", 2, COLOR_WHITE);
+    printTextCenter("\b\b\b\bDIGITE SEU NOME: ", 5, COLOR_WHITE);
+    SetConsoleTextAttribute(out, COLOR_GREEN);
+
+    fflush(stdin);
+    scanf("%[a-z A-Z]%*c", player->name);
+  
+    if (strlen(player->name) > 10 || strlen(player->name) < 3) {
+      strcpy(player->name, "  ");
+      isNameValid = false;
+      printTextCenter("NOME INVALIDO", 2, COLOR_RED);
+      getch();
+    } else {
+      isNameValid = true;
+    }
+
+  } while (!isNameValid);
   
   system("cls");
   printTextCenter(player->name, 3, COLOR_GREEN);
@@ -207,7 +220,7 @@ void askPlayerInfo(gamer *player) {
         }
       }
     }
-
+ 
     carMenu[car.y][car.x]         = replacement;
     carMenu[car.y + 1][car.x]     = replacement;
     carMenu[car.y + 2][car.x]     = replacement;

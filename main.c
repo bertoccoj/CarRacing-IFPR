@@ -23,9 +23,12 @@ int main() {
     car adversarios[ENEMY_NUMBER];
     initEnemies(adversarios);
 
+    // reseta a fonte para branco
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_WHITE);
+
+    // limpa a tela e desenha a borda do jogo
     system("cls");
-    drawBorder();
+    drawBorder(COLOR_WHITE);
     initMatrix(gameMatrix);
     drawCar(gameState.player.car, gameMatrix, PIXEL_SOLID, gameState.player.car.color);
     drawEnemies(adversarios, gameMatrix, false);
@@ -41,11 +44,11 @@ int main() {
         printf("\ngameState.cycles: %d", gameState.cycles);
         printf("\ngameState.gameOver: %d", gameState.gameOver);
       #endif
-      printf("\n\n\n\n\t\t\t\t\t\t\t\t\t%s - Score: %d", gameState.player.name, gameState.player.score);
-      printf("\n\t\t\t\t\t\t\t\t\tFase: %d", gameState.currentStage);
+      printScore(gameState.player);
 
       gameState.cycles++;
-      if (gameState.cycles > LV2_TRIGGER) {
+      if (gameState.cycles == LV2_TRIGGER) {
+        drawBorder(COLOR_YELLOW);
         gameState.currentSpeed = SPEED_FAST;
         gameState.currentStage = 2;
       }
@@ -72,6 +75,7 @@ int main() {
 
       if (playerCollided(gameState.player.car, gameMatrix) || playerCollidedSides(gameState.player.car, gameMatrix)) {
         initPista(gameMatrix, COLOR_RED);
+        drawBorder(COLOR_RED);
         gameState.gameOver = true;
       }
       drawGameMatrix(gameMatrix);
