@@ -125,7 +125,7 @@ void readHighScoresFile(highScore destination[5]);
 void loadHighScores();
 void sortHighScores(highScore scores[6], int registros);
 void updateHighScore(car enemies[ENEMY_NUMBER], int *score);
-void printScore(gamer player);
+void printScore(gamer player, int currentStage);
 
 // funções de colisão
 int playerCollided(car playerCar, gamePixel matrix[ROWS][COLUMS]);

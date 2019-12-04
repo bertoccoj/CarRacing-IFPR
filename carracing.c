@@ -205,18 +205,22 @@ void updateHighScore(car enemies[ENEMY_NUMBER], int *score) {
   }
 }
 
-void printScore(gamer player) {
+void printScore(gamer player, int currentStage) {
   gotoxy(SCREEN_CENTER + COLUMS * 2 + 7, 8);
   int i;
+  // borda cima
   for (i = 0; i < strlen(player.name) + 6 * 2; i++) {
     printf("%c", PIXEL);
   }
-  for (i = 0; i < 7; i++) {
+
+  // borda esquerda
+  for (i = 0; i < 9; i++) {
     gotoxy(SCREEN_CENTER + COLUMS * 2 + 7, 8 + i);
     printf("%c", PIXEL);
   }
-  
-  for (i = 0; i < 7; i++) {
+
+  //borda baixo
+  for (i = 0; i < 9; i++) {
     gotoxy(SCREEN_CENTER + COLUMS * 2 + 7 + strlen(player.name) + 6 * 2, 8 + i);
     printf("%c", PIXEL);
   }
@@ -225,8 +229,11 @@ void printScore(gamer player) {
   printf("NOME: %s", player.name);
   gotoxy(SCREEN_CENTER + COLUMS * 2 + 10, 12);
   printf("SCORE: %d", player.score);
+  gotoxy(SCREEN_CENTER + COLUMS * 2 + 10, 14);
+  printf("FASE: %d", currentStage);
 
-  gotoxy(SCREEN_CENTER + COLUMS * 2 + 7, 14);
+  //borda Cima
+  gotoxy(SCREEN_CENTER + COLUMS * 2 + 7, 16);
   for (i = 0; i < strlen(player.name) + 6 * 2; i++) {
     printf("%c", PIXEL);
   }

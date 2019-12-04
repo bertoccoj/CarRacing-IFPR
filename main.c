@@ -44,7 +44,7 @@ int main() {
         printf("\ngameState.cycles: %d", gameState.cycles);
         printf("\ngameState.gameOver: %d", gameState.gameOver);
       #endif
-      printScore(gameState.player);
+      printScore(gameState.player, gameState.currentStage);
 
       gameState.cycles++;
       if (gameState.cycles == LV2_TRIGGER) {
