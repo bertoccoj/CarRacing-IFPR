@@ -9,8 +9,6 @@ void readHighScoresFile(highScore destination[5]) {
             fread(&destination[i], sizeof(highScore), 1, arquivo);
             if(feof(arquivo)) { break; }
         }
-    } else {
-        printf("no file found");
     }
     fclose(arquivo);
 }
